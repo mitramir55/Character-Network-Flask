@@ -1,4 +1,4 @@
-from fileinput import filename
+
 from flask import Flask, flash, redirect, url_for, render_template, request
 import pandas as pd
 import os, io, csv
@@ -24,9 +24,9 @@ def character(mode='', **kwargs):
 
         # content -----------------------------------------
         # check content
-        book_content_file = request.files['book_content']
+        book_content_file = request.files["book_content"]
         if book_content_file.filename == '':
-            flash('Np selected file!')
+            flash('No selected file!')
 
         # if everything was ok
         if book_content_file and allowed_file(book_content_file.filename):
@@ -34,8 +34,8 @@ def character(mode='', **kwargs):
             file_path = os.path.join(app.config['UPLOAD_FOLDER'])
             book_content_file.save(file_path)
 
-            with open(file_path, 'rt') as f:
-                book_content = f.read()
+            with open(file_path) as f:
+                book_content = f.readlines()
                 
                 
             # title ---------------------------------

@@ -15,15 +15,15 @@
   <div class="masthead-content">
     <div class="container px-5">
 
-  <form action="#" method="post">
+  <form action="#" method="post" enctype="multipart/form-data">
     <p>Book title: <input type="text" name="book_title"></p>
-    <p>Book content: <input type="file" name="book_content"></p>
-    <p><input type="submit" name="submit"></p>
+    <p>Book content: <input type="file" name="book_content" ></p>
+    <input type="submit" name="submit">
   </form>
 </div>
 </div>
   {% if received %}
-    {print Your files have been received successfully!}
+    {print ("Your files have been received successfully!")}
   {% endif %}
 
 
