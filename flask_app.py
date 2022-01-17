@@ -31,21 +31,25 @@ def character(mode='', **kwargs):
         # if everything was ok
         if book_content_file and allowed_file(book_content_file.filename):
 
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'])
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'] + 'file_content.txt')
             book_content_file.save(file_path)
 
-            with open(file_path) as f:
-                book_content = f.readlines()
-                
+            #book_content = pd.read_csv(file_path)
+            with open(file_path, encoding="utf8") as f:
+                book_content = f.read()
+
                 
             # title ---------------------------------
             book_title = request.form['book_title']
 
 
-            # analysis --------------------------------
-
         elif not allowed_file(book_content_file.filename): flash('please provide a file with txt extention.')    
         
+
+            # analysis --------------------------------
+
+
+            
         return render_template("character_net.html", received=True)
 
 
@@ -58,7 +62,7 @@ def character(mode='', **kwargs):
 
 
 # config------------------------------------------------
-UPLOAD_FOLDER = 'uploaded_files'
+UPLOAD_FOLDER = 'uploaded_files/'
 ALLOWED_EXTENSIONS = {'txt'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER

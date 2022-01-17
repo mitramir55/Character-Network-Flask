@@ -20,11 +20,17 @@
     <p>Book content: <input type="file" name="book_content" ></p>
     <input type="submit" name="submit">
   </form>
-</div>
-</div>
+
   {% if received %}
-    {print ("Your files have been received successfully!")}
+  <br>
+    &#10004; {{" Your files have been received successfully!"}}
+    <br>
+
+
+
+    
   {% endif %}
 
-
+</div>
+</div>
 {% endblock %}
