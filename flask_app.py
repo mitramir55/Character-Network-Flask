@@ -1,9 +1,11 @@
-
+#from crypt import methods
 from flask import Flask, flash, redirect, url_for, render_template, request
 import pandas as pd
-import os, io, csv
+import os, io, csv, sys
 from werkzeug.utils import secure_filename
+sys.path.append(r'C:\Users\Lenovo\character-network')
 
+from character_net_src import Book_analyzer
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -14,13 +16,22 @@ def allowed_file(filename):
 # Flask ----------------------------------------------------------------
 app = Flask(__name__)
 
+@app.route('/', methods=['POST', 'GET'])
+def index():
+    
+    if request.method=='POST':
+        return render_template('character_net.html')
+    return render_template('index.html')
+
+
 
 @app.route('/character_net', methods=['POST', 'GET'])
-def character(mode='', **kwargs):
+def character(**kwargs):
 
     # for submitting the title and content
     if request.method=='POST' and request.form.get("book_title"): 
         
+
 
         # content -----------------------------------------
         # check content
@@ -28,8 +39,13 @@ def character(mode='', **kwargs):
         if book_content_file.filename == '':
             flash('No selected file!')
 
+        # check the name
+        elif not allowed_file(book_content_file.filename): flash('please provide a file with txt extention.')    
+        
         # if everything was ok
-        if book_content_file and allowed_file(book_content_file.filename):
+        elif book_content_file and allowed_file(book_content_file.filename):
+
+            received=True
 
             file_path = os.path.join(app.config['UPLOAD_FOLDER'] + 'file_content.txt')
             book_content_file.save(file_path)
@@ -42,15 +58,38 @@ def character(mode='', **kwargs):
             # title ---------------------------------
             book_title = request.form['book_title']
 
-
-        elif not allowed_file(book_content_file.filename): flash('please provide a file with txt extention.')    
-        
-
             # analysis --------------------------------
+            analyzer = Book_analyzer()
+
+            # ask the user to add to this  cu_patterns_to_remove 
+            book_content_cleaned = analyzer.clean_content(book_content=book_content, cu_patterns_to_remove = ['¡¡¡¡'])
+
+            # detect sents
+            book_sentences = analyzer.spacy_detect_sentences(book_content_cleaned)
+
+            if received:
+                return render_template("character_net.html", received=received)
+        
+           # ask for chapter regex
+            if request.method=='POST' and request.form.get("chapter_regex"):
+
+                chapter_regex = request.form["chapter_regex"]
+
+                if chapter_regex!= 'no chapter':
+                    finalized_sents = analyzer.clean_sentences(book_sentences, chapter_regex = chapter_regex)
+
+                else:
+                    finalized_sents = analyzer.clean_sentences(book_sentences, chapter_regex = 'No chapter')
+
+                
+            length = len(finalized_sents)
+            
+            return render_template("character_net.html", received=received, length=length)
+
+
 
 
             
-        return render_template("character_net.html", received=True)
 
 
     return render_template('character_net.html')

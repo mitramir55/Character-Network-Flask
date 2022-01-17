@@ -475,6 +475,23 @@ iframe {
   border: 0;
 }
 
+.network{
+  width:55%;
+  margin-right:2%;
+  float: right;
+}
+.network iframe{
+ width:100%;
+}
+.net_paragraph {
+  width:42%;
+  float: right;
+  padding-top: 200px;
+}
+.clearfix{
+  clear:both
+}
+
 summary {
   display: list-item;
   cursor: pointer;

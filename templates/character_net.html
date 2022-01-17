@@ -1,32 +1,43 @@
 {% extends "base.html" %}
 
-
 {% block content %}
+<div class="col-lg-6 order-lg-1">
+  <div class="p-5">
 
-<iframe width="100%" height="883.5" frameborder="0"
-  src="https://observablehq.com/embed/@mitramir55/force-directed-graph/2?cells=chart"></iframe>
-
-
-  <div class="col-lg-6 order-lg-1">
+</div></div>
     <div class="p-5">
         <h2 class="display-4">Let's get started!</h2>
     <p> please input the book information:</p>
-        </div></div>
+        </div>
   <div class="masthead-content">
     <div class="container px-5">
 
   <form action="#" method="post" enctype="multipart/form-data">
     <p>Book title: <input type="text" name="book_title"></p>
     <p>Book content: <input type="file" name="book_content" ></p>
-    <input type="submit" name="submit">
+    <input type="submit" name="submit"  class="btn btn-success">
   </form>
+
+  <br>
 
   {% if received %}
   <br>
     &#10004; {{" Your files have been received successfully!"}}
     <br>
 
+    <form action="#" method="post" enctype="multipart/form-data">
+      <p>If this book has any chapters please write one sample of it in the box bellow.
+        For example, if in the beginning of each chapter we have: "CHAPTER ..." write "CHAPTER" in the box.
+      If not, just type: "no chapter".</p>
+      <p><input type="text", name="chapter_regex"></p>
+      <input type="submit" name="submit">
 
+    </form>
+<br>
+    {% if received and length %}
+      <p>This book has {{length}} sentences! </p>
+    {% endif %}
+  
 
     
   {% endif %}
