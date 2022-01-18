@@ -114,9 +114,23 @@ def character(**kwargs):
 
 
         if request.form['submit'] == "Go with TransformerS!":
+
+            flash("will be loaded after I get out of Iran!\n for now, import the sentiment file.")
+            # unhash the following =======================================
             
-            from transformers import pipeline, AutoModelForTokenClassification, AutoTokenizer
-            classifier = pipeline('sentiment-analysis', device=0)
+            #sentiment_lables, encoded_sentiment_labels, emotions_count = analyzer.senti_analysis_transformers(book_dict['finalized_sents'])
+            with open('C:\Users\Lenovo\flask-app-character-net\first_book_props\book_content.pkl', 'rb') as f:
+                book_content = f.read()
+            with open('C:\Users\Lenovo\flask-app-character-net\first_book_props\sentiment_lables.pkl', 'rb') as f:
+                sentiment_lables = f.read()
+            with open('C:\Users\Lenovo\flask-app-character-net\first_book_props\encoded_sentiment_labels.pkl', 'rb') as f:
+                encoded_sentiment_labels = f.read()
+            with open('C:\Users\Lenovo\flask-app-character-net\first_book_props\emotions_count.pkl', 'rb') as f:
+                emotions_count = f.read()
+
+            return redirect(url_for('character', received=received, emotions))
+           
+        #if request.form['submit'] == "Use Afinn!":
 
 
 
