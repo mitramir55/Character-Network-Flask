@@ -17,8 +17,6 @@
     <p>Book content: <input type="file" name="book_content" ></p>
 
 
-  <br>
-
       <p>If this book has any chapters please write one sample of it in the box bellow.
         For example, if in the beginning of each chapter we have: "CHAPTER ..." write "CHAPTER" in the box.
       If not, just type: "no chapter".</p>
@@ -26,6 +24,8 @@
     <input type="submit" name="submit" value="Submit Book Info"  class="btn btn-success">
       <br>    <br>
     </form>
+
+
 
   {% if received %}
   <br>
@@ -53,12 +53,21 @@
       negative feelings or some emotion in between. </p>
     </div>
     <br> <br>
-    <form action="#">
+    <form action="#"  method="post" enctype="multipart/form-data">
     <input type="submit" name="submit" value="Go with TransformerS!"  class="btn btn-success">
     </form>
 
         <br>
         <br>
+        <p>Distribution of sentences' emotions in this novel: </p>
+        <p><span style="color: rgb(20, 190, 97);">Positive:  </span> {{ emotions_count['POSITIVE'] }}</p> 
+        <p><span style="color: rgb(0, 140, 255);">Neutral:  </span>  {{ emotions_count['NEUTRAL'] }}</p> 
+        <p><span style="color: rgb(114, 35, 88);">Negative:  </span> {{ emotions_count['NEGATIVE'] }}</p> 
+
+
+
+
+
     {% endif %}
   
 
