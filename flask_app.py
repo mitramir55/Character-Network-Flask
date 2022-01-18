@@ -31,7 +31,7 @@ def character(**kwargs):
     # for submitting the title and content
     if request.method=='POST' and request.form.get("book_title"): 
         
-
+        received=False
 
         # content -----------------------------------------
         # check content
@@ -45,7 +45,6 @@ def character(**kwargs):
         # if everything was ok
         elif book_content_file and allowed_file(book_content_file.filename):
 
-            received=True
 
             file_path = os.path.join(app.config['UPLOAD_FOLDER'] + 'file_content.txt')
             book_content_file.save(file_path)
@@ -67,24 +66,23 @@ def character(**kwargs):
             # detect sents
             book_sentences = analyzer.spacy_detect_sentences(book_content_cleaned)
 
-            if received:
-                return render_template("character_net.html", received=received)
+            return render_template("character_net.html", received=True)
         
-           # ask for chapter regex
-            if request.method=='POST' and request.form.get("chapter_regex"):
+        # ask for chapter regex
+        if request.method=='POST' and request.form.get("chapter_regex"):
 
-                chapter_regex = request.form["chapter_regex"]
+            chapter_regex = request.form["chapter_regex"]
 
-                if chapter_regex!= 'no chapter':
-                    finalized_sents = analyzer.clean_sentences(book_sentences, chapter_regex = chapter_regex)
+            if chapter_regex!= 'no chapter':
+                finalized_sents = analyzer.clean_sentences(book_sentences, chapter_regex = chapter_regex)
 
-                else:
-                    finalized_sents = analyzer.clean_sentences(book_sentences, chapter_regex = 'No chapter')
+            else:
+                finalized_sents = analyzer.clean_sentences(book_sentences, chapter_regex = 'No chapter')
 
-                
+            
             length = len(finalized_sents)
-            
-            return render_template("character_net.html", received=received, length=length)
+                
+            return render_template("character_net.html", received=True, length=length)
 
 
 
@@ -92,7 +90,7 @@ def character(**kwargs):
             
 
 
-    return render_template('character_net.html')
+    else: return render_template('character_net.html')
 
 
 
