@@ -11,37 +11,51 @@
   <a href="https://github.com/fnielsen/afinn">Afinn</a> or 
   <a href="https://huggingface.co/docs/transformers/master/index"> Transformers</a></p>
 
-<button type="button" class="collapsible"><h6>Afinn or Transformers?!</h6></button>
-<div class="content_">
         <br>
-        <p>Afinn is the simplest yet popular lexicons tool used for sentiment analysis.
-            It contains 3300+ words with a polarity score associated with each word. 
-        In python, there is an in-built function for this lexicon. Although small and fast,
-        this package cannot accurately decide the emotions in a bit complicated sentences.
+        <p>In here we are using SpaCy's NER with the large model to identify the names in your text.
+            After this step, we flatten the names (remove honararies, titles, or last names), sort them, and 
+            ask you to take a look to make sure no extra info is included. You get to choose the number of 
+            characters you want to stay in the game for the final analysis.
+            
+        </p>
 
-        On the other hand, Transformers🤗 models are bigger, but more reliable. They're basically 
-        neurons which had to learn the language and decide whether a text is relaying positive or
-        negative feelings or some emotion in between. </p>
-        </div>
         <br> <br>
         <form action="#"  method="post" enctype="multipart/form-data">
-        <input type="submit" name="submit" value="Go with TransformerS!"  class="btn btn-success">
-        <input type="submit" name="submit" value="Go with Afinn!"  class="btn btn-success">
+            <p>How many names do you want to have in your character analysis? (recommended = 25)
+                <input type="text" name="n"></p>
+            <p><input type="submit" name="submit" value="Find the Names!"  class="btn btn-success"></p>
         </form>
 
         <br>
         <br>
         {% if received %}
-        <p>Distribution of sentences' emotions in this novel: </p>
-        <p><span style="color: rgb(20, 190, 97);">Positive:  </span> {{ emotions_count['POSITIVE'] }}</p> 
-        <p><span style="color: rgb(0, 140, 255);">Neutral:  </span>  {{ emotions_count['NEUTRAL'] }}</p> 
-        <p><span style="color: rgb(114, 35, 88);">Negative:  </span> {{ emotions_count['NEGATIVE'] }}</p> 
+        <p>Here are top n characters of this novel: </p>
+        {% print "here is the length:" %}
+        {{length}}
+        <table>
+            <tr>
+                {% for col in column_names %}
+                <th style="background-color: #74c5c1;">{{ col }}</th>
+                {% endfor %}
+            </tr>
+            {% for row in row_data %}
+            <tr>
+                {% for col, row_ in zip(column_names, row) %}
+                {% if col == link_column %}
+                <td>
+                        {{ row_ }}
+                </td>
+                {% else %}
+                <td>{{row_}}</td>
+                {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
 
-        
-        
-        <form action="#"  method="post" enctype="multipart/form-data">
-            <input type="submit" name="submit" value="Named Entity Recognition"  class="btn btn-success">
-        </form>
+        </table>
+
+    
+        <br>
 
         {% endif %}
 

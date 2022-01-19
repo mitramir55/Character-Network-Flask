@@ -179,8 +179,29 @@ def ner(**kwargs):
     if request.method=='POST': 
 
         # afinn ----------------------------------------------------------
-        if request.form['submit'] == "Go with Afinn!":
+        if request.form['submit'] == "Find the Names!":
 
+            # test--------------------
+            if not request.form['n']:
+                flash('Please specify the top n!')
+                return redirect(url_for('ner', error=True))
+                
+            elif request.form['n']:
+
+                book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
+                n = int(request.form['n'])
+
+                analyzer = Book_analyzer()
+                sorted_flatten_names_dict = analyzer.flatten_pop_names(list_sents=book_dict['finalized_sents'])
+
+                df = pd.DataFrame({'Top':i, 'Known as':k, 'Num. of Appearances':v} for i, (k,v) in enumerate(sorted_flatten_names_dict.items()))
+                top_n_df = df.iloc[:n, :]
+
+                length=len(book_dict['finalized_sents'])
+                return render_template('ner.html', length=length, top_n_popular_names=top_n_df, zip=zip, received=True,
+                    column_names=top_n_df.columns.values, row_data=list(top_n_df.values.tolist())) 
+
+    else: return render_template('ner.html', received=None)
 
 # config------------------------------------------------
 UPLOAD_FOLDER = 'uploaded_files/'
