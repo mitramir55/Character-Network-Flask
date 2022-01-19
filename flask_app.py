@@ -4,6 +4,8 @@ from flask import Flask, flash, redirect, url_for, render_template, request, Res
 import pandas as pd
 import os, io, csv, sys, pickle, time
 from werkzeug.utils import secure_filename
+from afinn import Afinn
+
 sys.path.append(r'C:\Users\Lenovo\character-network')
 pd.set_option('display.float_format','{:.2f}'.format)
 
@@ -23,8 +25,8 @@ app = Flask(__name__)
 def index():
     
     if request.method=='POST':
-        return redirect(url_for('character'))
-        #return render_template('character_net.html')
+        return redirect(url_for('character_net'))
+        
     return render_template('index.html')
 
 
@@ -113,36 +115,71 @@ def character_net(**kwargs):
 
                 return render_template('character_net.html', received=True, length=length)
 
+        if request.form['submit'] == "Go to Sentiment Analysis!":
+
+            return redirect(url_for('senti_analysis'))
+
+        if request.form['submit'] == "Go to Named Entity recognition!":
+
+            return redirect(url_for('senti_analysis'))
+
 
     else: return render_template('character_net.html', error=error)
 
     
-@app.route('/sentiment_analysis')
-def senti_analysis():
+@app.route('/senti_analysis', methods=['POST', 'GET'])
+def senti_analysis(**kwargs):
 
-    if request.form['submit'] == "Go with TransformerS!":
+    
+    if request.method=='POST': 
 
-        flash("will be loaded after I get out of Iran!\n for now, import the sentiment file.")
-        # unhash the following =======================================
-        
-        #sentiment_lables, encoded_sentiment_labels, emotions_count = analyzer.senti_analysis_transformers(book_dict['finalized_sents'])
+        # afinn ----------------------------------------------------------
+        if request.form['submit'] == "Go with Afinn!":
 
-        book_content = pd.read_pickle(r'C:\Users\Lenovo\flask-app-character-net\first_book_props\book_content.pkl')
-        sentiment_lables = pd.read_pickle(r'C:\Users\Lenovo\flask-app-character-net\first_book_props\sentiment_lables.pkl')
-        encoded_sentiment_labels = pd.read_pickle(r'C:\Users\Lenovo\flask-app-character-net\first_book_props\emotions_count.pkl')
-        emotions_count = pd.read_pickle(r'C:\Users\Lenovo\flask-app-character-net\first_book_props\emotions_count.pkl')
+            # analysis --------------------------------
+            analyzer = Book_analyzer()
+            book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
+            sentiment_lables, encoded_sentiment_labels, emotions_count = analyzer.senti_analysis_Afinn(sentence_list=book_dict['finalized_sents'])        
+            
+            
+            return render_template('senti_analysis.html',
+                received=True, sentiment_lables=sentiment_lables, 
+                encoded_sentiment_labels =encoded_sentiment_labels,
+                emotions_count=emotions_count)
 
-        return render_template('character_net.html',
-            received=True, sentiment_lables=sentiment_lables, 
-            encoded_sentiment_labels =encoded_sentiment_labels,
-            emotions_count=emotions_count)
-        
-    #if request.form['submit'] == "Use Afinn!":
+        # transformers ----------------------------------------------------------
+        if request.form['submit'] == "Go with TransformerS!":
+
+            flash("will be loaded after I get out of Iran!\n for now, import the sentiment file.")
+            # unhash the following =======================================
+            
+            #sentiment_lables, encoded_sentiment_labels, emotions_count = analyzer.senti_analysis_transformers(book_dict['finalized_sents'])
+
+            book_content = pd.read_pickle(r'C:\Users\Lenovo\flask-app-character-net\first_book_props\book_content.pkl')
+            sentiment_lables = pd.read_pickle(r'C:\Users\Lenovo\flask-app-character-net\first_book_props\sentiment_lables.pkl')
+            encoded_sentiment_labels = pd.read_pickle(r'C:\Users\Lenovo\flask-app-character-net\first_book_props\emotions_count.pkl')
+            emotions_count = pd.read_pickle(r'C:\Users\Lenovo\flask-app-character-net\first_book_props\emotions_count.pkl')
+
+            return render_template('senti_analysis.html',
+                received=True, sentiment_lables=sentiment_lables, 
+                encoded_sentiment_labels =encoded_sentiment_labels,
+                emotions_count=emotions_count)
+
+        if request.form['submit'] == "Named Entity Recognition":
+            return redirect(url_for('ner'))
+
+    else: return render_template('senti_analysis.html')
 
 
 
+@app.route('/ner', methods=['POST', 'GET'])
+def ner(**kwargs):
 
+    
+    if request.method=='POST': 
 
+        # afinn ----------------------------------------------------------
+        if request.form['submit'] == "Go with Afinn!":
 
 
 # config------------------------------------------------

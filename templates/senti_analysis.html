@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+<br>
+<div class="masthead-content">
+    <div class="container px-5">
+<hr>
+<h5>Sentiment Analysis</h5>
+ <p>In this section we either use 
+  <a href="https://github.com/fnielsen/afinn">Afinn</a> or 
+  <a href="https://huggingface.co/docs/transformers/master/index"> Transformers</a></p>
+
+<button type="button" class="collapsible"><h6>Afinn or Transformers?!</h6></button>
+<div class="content_">
+        <br>
+        <p>Afinn is the simplest yet popular lexicons tool used for sentiment analysis.
+            It contains 3300+ words with a polarity score associated with each word. 
+        In python, there is an in-built function for this lexicon. Although small and fast,
+        this package cannot accurately decide the emotions in a bit complicated sentences.
+
+        On the other hand, Transformers🤗 models are bigger, but more reliable. They're basically 
+        neurons which had to learn the language and decide whether a text is relaying positive or
+        negative feelings or some emotion in between. </p>
+        </div>
+        <br> <br>
+        <form action="#"  method="post" enctype="multipart/form-data">
+        <input type="submit" name="submit" value="Go with TransformerS!"  class="btn btn-success">
+        <input type="submit" name="submit" value="Go with Afinn!"  class="btn btn-success">
+        </form>
+
+        <br>
+        <br>
+        {% if received %}
+        <p>Distribution of sentences' emotions in this novel: </p>
+        <p><span style="color: rgb(20, 190, 97);">Positive:  </span> {{ emotions_count['POSITIVE'] }}</p> 
+        <p><span style="color: rgb(0, 140, 255);">Neutral:  </span>  {{ emotions_count['NEUTRAL'] }}</p> 
+        <p><span style="color: rgb(114, 35, 88);">Negative:  </span> {{ emotions_count['NEGATIVE'] }}</p> 
+
+        
+        
+        <form action="#"  method="post" enctype="multipart/form-data">
+            <input type="submit" name="submit" value="Named Entity Recognition"  class="btn btn-success">
+        </form>
+
+        {% endif %}
+
+
+</div>
+</div>
+
+
+{% endblock %}
