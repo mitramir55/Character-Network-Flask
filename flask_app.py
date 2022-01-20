@@ -5,6 +5,8 @@ import pandas as pd
 import os, io, csv, sys, pickle, time
 from werkzeug.utils import secure_filename
 from afinn import Afinn
+from charset_normalizer import from_path
+
 
 sys.path.append(r'C:\Users\Lenovo\character-network')
 pd.set_option('display.float_format','{:.2f}'.format)
@@ -78,8 +80,8 @@ def character_net(**kwargs):
                 file_path = os.path.join(app.config['UPLOAD_FOLDER'] + 'file_content.txt')
                 book_content_file.save(file_path)
 
-                with open(file_path, encoding="utf8") as f:
-                    book_content = f.read()
+                results = from_path(file_path)
+                book_content = str(results.best())
 
                 # store the content in the dict
                 book_dict['book_content'] = book_content
