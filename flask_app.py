@@ -1,6 +1,7 @@
 #from crypt import methods
 from distutils.command.config import config
 from flask import Flask, flash, redirect, url_for, render_template, request, Response
+import numpy as np
 import pandas as pd
 import os, io, csv, sys, pickle, time
 from werkzeug.utils import secure_filename
@@ -194,7 +195,8 @@ def ner(**kwargs):
                 n = int(request.form['n'])
 
                 analyzer = Book_analyzer()
-                sorted_flatten_names_dict = analyzer.flatten_pop_names(list_sents=book_dict['finalized_sents'])
+                sorted_names_dict = analyzer.find_most_pop_names(list_sents=book_dict['finalized_sents'])
+                sorted_flatten_names_dict = analyzer.flatten_names(sorted_names_dict)
 
                 book_dict['names_dict'] = sorted_flatten_names_dict
                 book_dict['top_n'] = n
@@ -204,9 +206,8 @@ def ner(**kwargs):
                     pickle.dump(book_dict, f)
 
 
-                df = pd.DataFrame({'Top':i, 'Known as':k, 'Num. of Appearances':v} for i, (k,v) in enumerate(sorted_flatten_names_dict.items()))
+                df = pd.DataFrame({'Rank':i+1, 'Known as':k, 'Num. of Appearances':v} for i, (k,v) in enumerate(sorted_flatten_names_dict.items()))
                 top_n_df = df.iloc[:n, :]
-                top_n_df.index+=1
 
                 length=len(df)
 
@@ -214,27 +215,34 @@ def ner(**kwargs):
                     column_names=top_n_df.columns.values, row_data=list(top_n_df.values.tolist())) 
 
 
-        if request.form['submit'] == 'Find this name!':
+        if request.form['submit'] == 'Add and Remove These!':
 
             analyzer=Book_analyzer()
-            unrecognized_name = request.form['unrecognized_name']
+            missed_names = request.form['unrecognized_names']
+            extra_names = request.form['extra_names']
             book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
             n = book_dict['top_n']
 
-            new_book_dict = analyzer.find_unrecognized_names(
+            names_dict = analyzer.add_or_remove_names(
                 list_sents=book_dict['finalized_sents'],
-                 names_dict=book_dict['names_dict'], 
-                 name=unrecognized_name)
+                names_dict=book_dict['names_dict'], 
+                extra_names=extra_names,
+                missed_names=missed_names)
 
-            df = pd.DataFrame({'Rank':i, 'Known as':k, 'Num. of Appearances':v} for i, (k,v) in enumerate(new_book_dict.items()))
+
+            sorted_flatten_names_dict = analyzer.flatten_names(names_dict)
+            df = pd.DataFrame({'Rank':i, 'Known as':k, 'Num. of Appearances':v} for i, (k,v) in enumerate(sorted_flatten_names_dict.items()))
             top_n_df = df.iloc[:n, :]
-            top_n_df.index+=1
+
 
             return render_template('ner.html', length=len(df), top_n_popular_names=top_n_df, zip=zip, received=True,
-                column_names=top_n_df.columns.values, row_data=list(top_n_df.values.tolist())) 
+            column_names=top_n_df.columns.values, row_data=list(top_n_df.values.tolist())) 
 
-        if request.form['submit'] == "No missing piece!":
-            return render_template('ner.html', received=None)
+
+        if request.form['submit'] == "No problem! Go to the next step!":
+
+            return render_template('ner.html') 
+
 
 
     else: return render_template('ner.html', received=None)
