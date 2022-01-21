@@ -7,9 +7,8 @@
     <div class="container px-5">
 <hr>
 <h5>Named Entity Recognition</h5>
- <p>In this section we either use 
-  <a href="https://github.com/fnielsen/afinn">Afinn</a> or 
-  <a href="https://huggingface.co/docs/transformers/master/index"> Transformers</a></p>
+ <p>In this section we use 
+  <a href="https://github.com/fnielsen/afinn">SpaCy's large model.</a></p>
 
         <br>
         <p>In here we are using SpaCy's NER with the large model to identify the names in your text.
@@ -30,16 +29,17 @@
         <br>
         {% if received %}
         <p>Here are top n characters of this novel: </p>
-        {% print "here is the length:" %}
+        {% print "Here is the total number of unique names found:" %}
         {{length}}
-        <table>
+        <br>
+        <table  class="table">
             <tr>
                 {% for col in column_names %}
-                <th style="background-color: #74c5c1;">{{ col }}</th>
+                <th style="background-color: #74c5c1;" class="col">{{ col }}</th>
                 {% endfor %}
             </tr>
             {% for row in row_data %}
-            <tr>
+            <tr scope="row">
                 {% for col, row_ in zip(column_names, row) %}
                 {% if col == link_column %}
                 <td>
@@ -57,6 +57,17 @@
     
         <br>
 
+        <p>Sometimes, the SpaCy model might not recognize specific names 
+            (especially rare names or names coined by the author). In that case, we can make sure that the cadre of 
+        characters is complete by searching for the name and ranking it ourself.</p>
+        <p>Please add one name at a time (if any name is missed), or just click on the "no missed names" button.</p>
+        <form action="#"  method="post" enctype="multipart/form-data">
+            <p>Missed name:
+                <input type="text" name="unrecognized_name"></p>
+            <p><input type="submit" name="submit" value="Find this name!" class="btn btn-success"></p>
+                <p><input type="submit" name="submit" value="No missing piece!" class="btn btn-success"></p>
+        </form>
+            
         {% endif %}
 
 

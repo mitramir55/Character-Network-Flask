@@ -196,12 +196,46 @@ def ner(**kwargs):
                 analyzer = Book_analyzer()
                 sorted_flatten_names_dict = analyzer.flatten_pop_names(list_sents=book_dict['finalized_sents'])
 
+                book_dict['names_dict'] = sorted_flatten_names_dict
+                book_dict['top_n'] = n
+
+
+                with open(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl', 'wb') as f:
+                    pickle.dump(book_dict, f)
+
+
                 df = pd.DataFrame({'Top':i, 'Known as':k, 'Num. of Appearances':v} for i, (k,v) in enumerate(sorted_flatten_names_dict.items()))
                 top_n_df = df.iloc[:n, :]
+                top_n_df.index+=1
 
-                length=len(book_dict['finalized_sents'])
+                length=len(df)
+
                 return render_template('ner.html', length=length, top_n_popular_names=top_n_df, zip=zip, received=True,
                     column_names=top_n_df.columns.values, row_data=list(top_n_df.values.tolist())) 
+
+
+        if request.form['submit'] == 'Find this name!':
+
+            analyzer=Book_analyzer()
+            unrecognized_name = request.form['unrecognized_name']
+            book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
+            n = book_dict['top_n']
+
+            new_book_dict = analyzer.find_unrecognized_names(
+                list_sents=book_dict['finalized_sents'],
+                 names_dict=book_dict['names_dict'], 
+                 name=unrecognized_name)
+
+            df = pd.DataFrame({'Rank':i, 'Known as':k, 'Num. of Appearances':v} for i, (k,v) in enumerate(new_book_dict.items()))
+            top_n_df = df.iloc[:n, :]
+            top_n_df.index+=1
+
+            return render_template('ner.html', length=len(df), top_n_popular_names=top_n_df, zip=zip, received=True,
+                column_names=top_n_df.columns.values, row_data=list(top_n_df.values.tolist())) 
+
+        if request.form['submit'] == "No missing piece!":
+            return render_template('ner.html', received=None)
+
 
     else: return render_template('ner.html', received=None)
 
