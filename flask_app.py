@@ -144,7 +144,15 @@ def senti_analysis(**kwargs):
             book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
             sentiment_lables, encoded_sentiment_labels, emotions_count = analyzer.senti_analysis_Afinn(sentence_list=book_dict['finalized_sents'])        
             
+            book_dict['sentiment_lables'] = sentiment_lables
+            book_dict['encoded_sentiment_labels'] = encoded_sentiment_labels
+            book_dict['emotions_count'] = emotions_count
+
             
+            with open(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl', 'wb') as f:
+                pickle.dump(book_dict, f)
+
+
             return render_template('senti_analysis.html',
                 received=True, sentiment_lables=sentiment_lables, 
                 encoded_sentiment_labels =encoded_sentiment_labels,
@@ -241,11 +249,50 @@ def ner(**kwargs):
 
         if request.form['submit'] == "No problem! Go to the next step!":
 
-            return render_template('ner.html') 
+            return redirect(url_for('cooccurance', received=None)) 
 
 
 
     else: return render_template('ner.html', received=None)
+
+
+@app.route('/cooccurance', methods=['POST', 'GET'])
+def cooccurance(**kwargs):
+
+    if request.method=='POST': 
+        if request.form['submit'] == "Give me the Cooccurrence!":
+            
+            book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
+            analyzer = Book_analyzer()
+            n = book_dict['top_n']
+            top_n_popular_names = list(book_dict['names_dict'].keys())[:n]
+
+            pop_names_df, cooccurrence_matrix, cooccurrence_matrix_with_senti = analyzer.create_cooccurrence_matrices(
+                top_n_popular_names=top_n_popular_names, 
+                book_sents=book_dict['finalized_sents'], 
+                encoded_senti_labels=book_dict['encoded_sentiment_labels'],
+                normalize_mode=True, threshold = 2)
+
+            cooccurrence_df = pd.DataFrame(cooccurrence_matrix, columns=top_n_popular_names, index=top_n_popular_names)
+            cooccurrence_df_with_senti = pd.DataFrame(cooccurrence_matrix_with_senti, columns=top_n_popular_names, index=top_n_popular_names)
+
+            return render_template('cooccurance.html', zip=zip, received=True,
+                            column_names_1=cooccurrence_df.columns.values,
+                            row_data_1=list(cooccurrence_df.values.tolist()),
+                            column_names_2=cooccurrence_df_with_senti.columns.values,
+                            row_data_2=list(cooccurrence_df_with_senti.values.tolist()),
+                            )
+
+        
+    else: return render_template('cooccurance.html', received=None)
+
+        
+    
+
+
+
+
+
 
 # config------------------------------------------------
 UPLOAD_FOLDER = 'uploaded_files/'

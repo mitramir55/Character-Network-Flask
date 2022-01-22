@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+<br>
+<div class="masthead-content">
+    <div class="container px-5">
+<hr>
+<h5>Co-occurrence </h5>
+
+
+<br>
+<p>In here we analyze the association of characters and their relationships! 😻 
+    
+</p>
+
+<br> <br>
+<form action="#"  method="post" enctype="multipart/form-data">
+    <p><input type="submit" name="submit" value="Give me the Cooccurrence!"  class="btn btn-success"></p>
+</form>
+
+<br>
+{% if received %}
+<br>
+<table  class="table">
+    <tr>
+        {% for col in column_names_1 %}
+        <th style="background-color: #74c5c1;" class="col">{{ col }}</th>
+        {% endfor %}
+    </tr>
+    {% for row in row_data_1 %}
+    <tr scope="row">
+        {% for col, row_ in zip(column_names_1, row) %}
+        {% if col == link_column %}
+        <td>
+                {{ row_ }}
+        </td>
+        {% else %}
+        <td>{{row_}}</td>
+        {% endif %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+
+</table>
+
+
+<br>
+<!-- second table with senti! -->
+<hr>
+<br>
+<table  class="table">
+    <tr>
+        {% for col in column_names_2 %}
+        <th style="background-color: #74c5c1;" class="col">{{ col }}</th>
+        {% endfor %}
+    </tr>
+    {% for row in row_data_2 %}
+    <tr scope="row">
+        {% for col, row_ in zip(column_names_2, row) %}
+        {% if col == link_column %}
+        <td>
+                {{ row_ }}
+        </td>
+        {% else %}
+        <td>{{row_}}</td>
+        {% endif %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endif %}
+<br>
+
+
+
+</div>
+</div>
+
+
+{% endblock %}
