@@ -21,8 +21,10 @@
 
 <br>
 {% if received %}
+
+The co-occurrence matrix: 
 <br>
-<table  class="table">
+<table  class="table table-striped">
     <tr>
         {% for col in column_names_1 %}
         <th style="background-color: #74c5c1;" class="col">{{ col }}</th>
@@ -44,12 +46,13 @@
 
 </table>
 
-
+<br>
+The emotions between characters:
 <br>
 <!-- second table with senti! -->
 <hr>
 <br>
-<table  class="table">
+<table  class="table table-striped">
     <tr>
         {% for col in column_names_2 %}
         <th style="background-color: #74c5c1;" class="col">{{ col }}</th>

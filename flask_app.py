@@ -237,6 +237,12 @@ def ner(**kwargs):
                 extra_names=extra_names,
                 missed_names=missed_names)
 
+            book_dict['names_dict'] = names_dict
+
+
+            with open(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl', 'wb') as f:
+                pickle.dump(book_dict, f)
+
 
             sorted_flatten_names_dict = analyzer.flatten_names(names_dict)
             df = pd.DataFrame({'Rank':i, 'Known as':k, 'Num. of Appearances':v} for i, (k,v) in enumerate(sorted_flatten_names_dict.items()))
@@ -271,10 +277,16 @@ def cooccurance(**kwargs):
                 top_n_popular_names=top_n_popular_names, 
                 book_sents=book_dict['finalized_sents'], 
                 encoded_senti_labels=book_dict['encoded_sentiment_labels'],
-                normalize_mode=True, threshold = 2)
+                normalize_mode=True, threshold = 0)
 
-            cooccurrence_df = pd.DataFrame(cooccurrence_matrix, columns=top_n_popular_names, index=top_n_popular_names)
-            cooccurrence_df_with_senti = pd.DataFrame(cooccurrence_matrix_with_senti, columns=top_n_popular_names, index=top_n_popular_names)
+            # create dataframes from the matrices
+            cooccurrence_df = pd.DataFrame(cooccurrence_matrix, columns=top_n_popular_names, index=top_n_popular_names).reset_index()
+            cooccurrence_df_with_senti = pd.DataFrame(cooccurrence_matrix_with_senti, columns=top_n_popular_names, index=top_n_popular_names).reset_index()
+
+            # create the index with characters names
+            cooccurrence_df.rename(columns={'index':'Characters'}, inplace=True)
+            cooccurrence_df_with_senti.rename(columns={'index':'Characters'}, inplace=True)
+
 
             return render_template('cooccurance.html', zip=zip, received=True,
                             column_names_1=cooccurrence_df.columns.values,
