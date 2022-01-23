@@ -2,6 +2,7 @@
 from distutils.command.config import config
 import re
 from flask import Flask, flash, redirect, url_for, render_template, request, Response
+from graphviz import render
 import numpy as np
 import pandas as pd
 import os, io, csv, sys, pickle, time
@@ -324,7 +325,23 @@ def cooccurance(**kwargs):
 
         
     
+@app.route('/progress', methods=['POST', 'GET'])
+def progress():
 
+    if request.form['submit'] == 'Generate the Graph!':
+        analyzer = Book_analyzer()
+        book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
+        n = book_dict['top_n']
+        top_n_popular_names = list(book_dict['names_dict'].keys())[:n]
+
+
+        graph_ = analyzer.matrix_to_edge(
+            cooccurrence_matrix=book_dict['cooccurrence_matrix'],
+            cooccurrence_matrix_with_senti=book_dict['cooccurrence_matrix_with_senti'],
+            pop_names_df=book_dict['pop_names_df'], 
+            top_n_popular_names=top_n_popular_names)
+
+    else: return render_template('progress.html')
 
 
 
