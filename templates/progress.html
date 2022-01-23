@@ -7,12 +7,13 @@
     <div class="container px-5">
 <hr>
 
-  <h1>Hello Plotly (but not Dash)</h1>
+  <h1>The importance of characters</h1>
+  <p>This plot is generated using Plotly, but it is not a dash app.</p>
   <div id='chart' class='chart'”></div>
 </body>
 <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 <script type='text/javascript'>
-  var graphs = {{graphJSON | safe}};
+  var graphs = {{ graphJSON | safe }};
   Plotly.plot('chart',graphs,{});
 </script>
 </html>

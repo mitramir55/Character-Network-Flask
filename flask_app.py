@@ -1,5 +1,6 @@
 #from crypt import methods
 from distutils.command.config import config
+import re
 from flask import Flask, flash, redirect, url_for, render_template, request, Response
 import numpy as np
 import pandas as pd
@@ -304,13 +305,20 @@ def cooccurance(**kwargs):
 
         if request.form['submit'] == "See the progress of characters...":
 
-            book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
-            analyzer = Book_analyzer()
-            n = book_dict['top_n']
-            top_n_popular_names = list(book_dict['names_dict'].keys())[:n]
+            if not request.form['n_sections']:
+                flash('Please enter the number of sections!', received=None)
+                return render_template('cooccurance.html')
 
-            graphJSON  = analyzer.create_plot_df(top_n_popular_names=top_n_popular_names, pop_names_df=book_dict['pop_names_df'])
-            return render_template('progress.html', graphJSON=graphJSON) 
+            if request.form['n_sections']:
+                n_sections = request.form['n_sections']
+                book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
+                analyzer = Book_analyzer()
+                n = book_dict['top_n']
+                top_n_popular_names = list(book_dict['names_dict'].keys())[:n]
+
+                graphJSON  = analyzer.create_plot_df(top_n_popular_names=top_n_popular_names,
+                 pop_names_df=book_dict['pop_names_df'], n_sections=n_sections)
+                return render_template('progress.html', graphJSON=graphJSON) 
         
     else: return render_template('cooccurance.html', received=None)
 
