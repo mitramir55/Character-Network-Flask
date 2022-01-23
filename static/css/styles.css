@@ -1983,10 +1983,10 @@ progress {
   --bs-table-active-bg: rgba(0, 0, 0, 0.1);
   --bs-table-hover-color: #212529;
   --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
-  width: 100%;
+  width: 90%;
   margin-bottom: 1rem;
   color: #212529;
-  vertical-align: top;
+  vertical-align: middle;
   border-color: #0a6e23;
   border: 1;
 }

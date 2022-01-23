@@ -279,6 +279,13 @@ def cooccurance(**kwargs):
                 encoded_senti_labels=book_dict['encoded_sentiment_labels'],
                 normalize_mode=True, threshold = 0)
 
+            book_dict['pop_names_df'] = pop_names_df
+            book_dict['cooccurrence_matrix'] = cooccurrence_matrix
+            book_dict['cooccurrence_matrix_with_senti'] = cooccurrence_matrix_with_senti
+            
+            with open(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl', 'wb') as f:
+                    pickle.dump(book_dict, f)
+
             # create dataframes from the matrices
             cooccurrence_df = pd.DataFrame(cooccurrence_matrix, columns=top_n_popular_names, index=top_n_popular_names).reset_index()
             cooccurrence_df_with_senti = pd.DataFrame(cooccurrence_matrix_with_senti, columns=top_n_popular_names, index=top_n_popular_names).reset_index()
@@ -295,6 +302,15 @@ def cooccurance(**kwargs):
                             row_data_2=list(cooccurrence_df_with_senti.values.tolist()),
                             )
 
+        if request.form['submit'] == "See the progress of characters...":
+
+            book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
+            analyzer = Book_analyzer()
+            n = book_dict['top_n']
+            top_n_popular_names = list(book_dict['names_dict'].keys())[:n]
+
+            graphJSON  = analyzer.create_plot_df(top_n_popular_names=top_n_popular_names, pop_names_df=book_dict['pop_names_df'])
+            return render_template('progress.html', graphJSON=graphJSON) 
         
     else: return render_template('cooccurance.html', received=None)
 
