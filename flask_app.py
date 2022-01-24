@@ -6,9 +6,9 @@ from graphviz import render
 import numpy as np
 import pandas as pd
 import os, io, csv, sys, pickle, time
-from werkzeug.utils import secure_filename
 from afinn import Afinn
 from charset_normalizer import from_path
+from itertools import chain 
 
 
 sys.path.append(r'C:\Users\Lenovo\character-network')
@@ -344,6 +344,28 @@ def progress():
     else: return render_template('progress.html')
 
 
+
+@app.route('/sent')
+def sent():
+    i=0
+    m=0
+    analyzer = Book_analyzer()
+    book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
+
+    all_sentences = []
+    list_corpus = [sent for sent in book_dict['book_content'].split('\n') if sent !='']
+    length = len(list_corpus)
+    hop = int(np.round(length/4)+1)
+
+    def func (i):
+        return render_template('progress_bar.html', progress=str(i)*0.25)
+
+    for i in range(0, length, hop):
+        all_sentences.append(analyzer.spacy_detect_sentences_editted(list_corpus=list_corpus[hop*i:hop*(i+1)]))
+        func(i)
+
+    all_sentences_final = list(chain.from_iterable(all_sentences[0]))
+    return render_template('progress_bar.html', progress=100)
 
 
 

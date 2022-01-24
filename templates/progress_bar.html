@@ -3,12 +3,15 @@
 
 {% block content %}
 
-<div class="progress" style="width: 50%; margin: 50px;">
-    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-        <span class="progress-bar-label">0%</span>
-    </div>
-</div>
+
+        <!-- Content section 1-->
+        <br><br>
+        <div class="col-lg-6 order-lg-1">
+            <div class="p-5">
+<div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: {{ progress }}%;" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">{{ progress }}</div>
+  </div>
 </div>
 
-
+</div>
 {% endblock %}
