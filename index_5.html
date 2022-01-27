@@ -4,8 +4,6 @@
     </head>
     <body>
         <h1>D3.js</h3> 
-        <p>I'm using D3.js here !</p>
-        <p>We all are using D3.js here !</p>
         <script src="https://d3js.org/d3.v5.min.js"></script>
         <script src="//unpkg.com/force-graph"></script>
         <script src="package\dist\d3.js"></script>
@@ -13,19 +11,23 @@
 
 
 
-
-
         <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
         <script>
         import * as d3 from "d3";
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/d3-dispatch@3"></script>
+        <script src="https://cdn.jsdelivr.net/npm/d3-quadtree@3"></script>
+        <script src="https://cdn.jsdelivr.net/npm/d3-timer@3"></script>
+        <script src="https://cdn.jsdelivr.net/npm/d3-force@3"></script>
+
+        <script type="module">
+
+                    import {Swatches} from "@d3/color-legend"
+                    import {ForceGraph} from "@mitramir55/force-directed-graph/2"
+
+        </script>
 
 <script>
-
-            import {Swatches} from "@d3/color-legend"
-            import {ForceGraph} from "@mitramir55/force-directed-graph/2"
-
-
             miserables = FileAttachment("data_graph_5.json").json()
             chart = ForceGraph(miserables, {
             nodeId: (d) => d.id,
