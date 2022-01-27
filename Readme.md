@@ -13,3 +13,9 @@ Add the naive Bayes analyzer
 blob_object = TextBlob('mitra is greatly bad', analyzer=NaiveBayesAnalyzer())
 print(blob_object.sentiment)
 ```
+
+copied this https://bl.ocks.org/heybignick/3faf257bbbbc7743bb72310d03b86ee8
+
+still not working 
+installed d3
+installed force
