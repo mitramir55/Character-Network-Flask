@@ -13,7 +13,6 @@ from afinn import Afinn
 from sklearn.feature_extraction.text import CountVectorizer
 import plotly.express as px
 import spacy
-from termcolor import colored
 import time
 from itertools import chain 
 import string
