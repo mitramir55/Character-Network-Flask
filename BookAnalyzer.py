@@ -5,17 +5,15 @@ import pandas as pd
 import regex as re
 import numpy as np #, torch
 # from transformers import pipeline
-import networkx as nx
-import plotly.express as px
-import matplotlib.pyplot as plt
+# import networkx as nx
+# import matplotlib.pyplot as plt
 from afinn import Afinn
 from sklearn.feature_extraction.text import CountVectorizer
+import plotly
 import plotly.express as px
-import spacy
 from itertools import chain 
 import string
 from collections import Counter
-import plotly
 from typing import Tuple
 pd.set_option('display.max_colwidth', None)
 
