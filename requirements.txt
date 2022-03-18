@@ -5,7 +5,7 @@ graphviz
 Flask
 pandas
 Afinn
-plotly==4.8.1
+plotly
 scikit-learn
 Werkzeug
 regex
