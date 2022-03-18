@@ -11,11 +11,10 @@ from charset_normalizer import from_path
 from itertools import chain 
 
 
-sys.path.append(r'C:\Users\Lenovo\character-network')
 pd.set_option('display.float_format','{:.2f}'.format)
 
 
-from character_net_src import Book_analyzer
+from BookAnalyzer import Book_analyzer
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -375,9 +374,6 @@ ALLOWED_EXTENSIONS = {'txt'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SECRET_KEY'] = '12345'
-
-if __name__ == "__main__":
-    app.run(debug=True)
 
 #------------------------------------------------------
 
