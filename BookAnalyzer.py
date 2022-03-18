@@ -8,9 +8,9 @@ import numpy as np #, torch
 # import networkx as nx
 # import matplotlib.pyplot as plt
 from afinn import Afinn
-from sklearn.feature_extraction.text import CountVectorizer
 import plotly
 import plotly.express as px
+from sklearn.feature_extraction.text import CountVectorizer
 from itertools import chain 
 import string
 from collections import Counter
