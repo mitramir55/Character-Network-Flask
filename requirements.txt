@@ -2,6 +2,7 @@ spacy==3.0.6
 spacy-legacy==3.0.6
 termcolor==1.1.0
 gunicorn
+torch
 Flask
 pandas
 Werkzeug

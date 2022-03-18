@@ -1,5 +1,3 @@
-
-from unicodedata import name
 from graphviz import Graph
 import spacy
 import json
