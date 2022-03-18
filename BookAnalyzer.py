@@ -8,7 +8,6 @@ import numpy as np #, torch
 # import networkx as nx
 # import matplotlib.pyplot as plt
 from afinn import Afinn
-import plotly
 import plotly.express as px
 from sklearn.feature_extraction.text import CountVectorizer
 from itertools import chain 
