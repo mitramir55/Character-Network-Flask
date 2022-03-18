@@ -5,13 +5,13 @@ import spacy
 import json
 import pandas as pd
 import regex as re
-import numpy as np, torch
+import numpy as np #, torch
+# from transformers import pipeline
 import networkx as nx
 import plotly.express as px
 import matplotlib.pyplot as plt
 from pathlib import Path
 from afinn import Afinn
-from nltk.tokenize import sent_tokenize
 from sklearn.feature_extraction.text import CountVectorizer
 import plotly.express as px
 import spacy
@@ -22,13 +22,8 @@ import string
 from collections import Counter
 import plotly
 from typing import Tuple
-
-import os
-from tqdm import tqdm 
-import tqdm.notebook as tq
 pd.set_option('display.max_colwidth', None)
 import pickle
-from transformers import pipeline
 
 
 
