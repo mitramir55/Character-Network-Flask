@@ -1,37 +1,42 @@
 {% extends "base.html" %}
 
 {% block content %}
-<br>
-<br>
 <div class="masthead-content">
     <div class="container px-5">
-<hr>
 <h5>Named Entity Recognition</h5>
  <p>In this section we use 
-  <a href="https://github.com/fnielsen/afinn">SpaCy's large model.</a></p>
+  <a href="https://github.com/explosion/spacy-models/releases/tag/en_core_web_sm-3.2.0">SpaCy's small model.</a></p>
 
         <br>
-        <p>In here we are using SpaCy's NER with the large model to identify the names in your text.
+        <p>In here we are using SpaCy's NER to identify the names in your text.
             After this step, we flatten the names (remove honararies, titles, or last names), sort them, and 
-            ask you to take a look to make sure no extra info is included. You get to choose the number of 
-            characters you want to stay in the game for the final analysis.
+            ask you to take a look to make sure no extra info is included. 
+            You get to choose the number of characters you want to stay in the game for the final analysis.
             
         </p>
+        {% if not received %}
+            <form action="#"  method="post" enctype="multipart/form-data">
+                <p>How many names do you want to have in your character analysis? (recommended = 25)
+                    <input type="text" name="n"></p>
+                <p><input type="submit" name="submit" value="Find the Names!"  class="btn btn-success"></p>
+            </form>
+        {% endif %}
 
-        <br> <br>
-        <form action="#"  method="post" enctype="multipart/form-data">
-            <p>How many names do you want to have in your character analysis? (recommended = 25)
-                <input type="text" name="n"></p>
-            <p><input type="submit" name="submit" value="Find the Names!"  class="btn btn-success"></p>
-        </form>
-
-        <br>
-        <br>
         {% if received %}
-        <p>Here are top n characters of this novel: </p>
-        {% print "Here is the total number of unique names found:" %}
+        <p> &#128103; &#128102; Here are top n characters of this novel: </p>
+            {% for name in names %}
+                {% if name == names[-1] %}
+               <p style="display:inline">{{name}}</p>
+               {% else %}
+                <p style="display:inline">{{name}}, </p>
+
+                {% endif %}
+            {% endfor %}
+            <br>
+<br>
+        {% print "The total number of unique names found:" %}
         {{length}}
-        <br>
+        <br><br>
         <table  class="table">
             <tr>
                 {% for col in column_names %}
@@ -53,8 +58,6 @@
             {% endfor %}
 
         </table>
-
-    
         <br>
 
         <p>Sometimes, the SpaCy model might not recognize specific names 

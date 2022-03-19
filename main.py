@@ -1,6 +1,7 @@
 #from crypt import methods
 from distutils.command.config import config
 import re
+from cherrypy import url
 from flask import Flask, flash, redirect, url_for, render_template, request, Response
 from graphviz import render
 import numpy as np
@@ -11,6 +12,7 @@ from charset_normalizer import from_path
 from itertools import chain 
 from werkzeug.utils import secure_filename
 from BookAnalyzer import Book_analyzer
+import plotly
 
 app = Flask(__name__)
 
@@ -59,25 +61,25 @@ def input_info(**kwargs):
             # check content
             if not request.files["book_content"]: 
                 flash('Please provide the book content!')
-                return redirect(url_for('character_net', error=True))
+                return redirect(url_for('input_info', error=True))
 
 
             book_content_file = request.files["book_content"]
 
             if book_content_file.filename == '':
                 flash('No selected file!')
-                return redirect(url_for('character_net', error=True))
+                return redirect(url_for('input_info', error=True))
 
             # check the name
             elif not allowed_file(book_content_file.filename): 
                 flash('please provide a file with txt extention.') 
-                return redirect(url_for('character_net', error=True))
+                return redirect(url_for('input_info', error=True))
             
             # check chapter name and title 
             for (k, v) in {'chapter': 'chapter_regex', 'title':'book_title'}.items():
                 if not request.form[v]:
                     flash(f'Please provide the {k} description!')
-                    return redirect(url_for('character_net', error=True))
+                    return redirect(url_for('input_info', error=True))
 
 
             # if everything was ok
@@ -106,11 +108,17 @@ def input_info(**kwargs):
 
                 save_book_dict(book_dict)
 
-                return render_template('book_info.html', length=book_dict['number_of_sentences'])
+                return redirect(url_for('book_info', length=book_dict['number_of_sentences']))
 
     else: return render_template('input_info.html', error=error)
 
-    
+@app.route('/book_info', methods=['POST', 'GET'])
+def book_info(**kwargs):
+    if request.method=='POST': 
+        return redirect(url_for('senti_analysis'))
+    else: return render_template('book_info.html')
+
+
 @app.route('/senti_analysis', methods=['POST', 'GET'])
 def senti_analysis(**kwargs):
 
@@ -142,15 +150,15 @@ def senti_analysis(**kwargs):
         # transformers ----------------------------------------------------------
         if request.form['submit'] == "Go with TransformerS!":
 
-            flash("will be loaded after I get out of Iran!\n for now, import the sentiment file.")
+            flash("will be loaded after I get out of Iran!\n for now, we use previously processed files.")
             # unhash the following =======================================
             
             #sentiment_lables, encoded_sentiment_labels, emotions_count = analyzer.senti_analysis_transformers(book_dict['finalized_sents'])
-
-            book_content = pd.read_pickle(r'C:\Users\Lenovo\flask-app-character-net\first_book_props\book_content.pkl')
-            sentiment_lables = pd.read_pickle(r'C:\Users\Lenovo\flask-app-character-net\first_book_props\sentiment_lables.pkl')
-            encoded_sentiment_labels = pd.read_pickle(r'C:\Users\Lenovo\flask-app-character-net\first_book_props\emotions_count.pkl')
-            emotions_count = pd.read_pickle(r'C:\Users\Lenovo\flask-app-character-net\first_book_props\emotions_count.pkl')
+            properties_folder_path = r"C:\Users\Lenovo\Flask apps\flask-app-character-net\Archive\sample results of analysis"
+            book_content = pd.read_pickle(properties_folder_path + r'\book_content.pkl')
+            sentiment_lables = pd.read_pickle(properties_folder_path + r'\sentiment_lables.pkl')
+            encoded_sentiment_labels = pd.read_pickle(properties_folder_path + r'\emotions_count.pkl')
+            emotions_count = pd.read_pickle(properties_folder_path + r'\emotions_count.pkl')
 
             return render_template('senti_analysis.html',
                 received=True, sentiment_lables=sentiment_lables, 
@@ -163,11 +171,8 @@ def senti_analysis(**kwargs):
     else: return render_template('senti_analysis.html')
 
 
-
 @app.route('/ner', methods=['POST', 'GET'])
 def ner(**kwargs):
-
-    
     if request.method=='POST': 
 
         # afinn ----------------------------------------------------------
@@ -190,18 +195,15 @@ def ner(**kwargs):
                 book_dict['names_dict'] = sorted_flatten_names_dict
                 book_dict['top_n'] = n
 
-
-                with open(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl', 'wb') as f:
-                    pickle.dump(book_dict, f)
-
+                save_book_dict(book_dict)
 
                 df = pd.DataFrame({'Rank':i+1, 'Known as':k, 'Num. of Appearances':v} for i, (k,v) in enumerate(sorted_flatten_names_dict.items()))
                 top_n_df = df.iloc[:n, :]
 
-                length=len(df)
+                
 
-                return render_template('ner.html', length=length, top_n_popular_names=top_n_df, zip=zip, received=True,
-                    column_names=top_n_df.columns.values, row_data=list(top_n_df.values.tolist())) 
+                return render_template('ner.html', length=len(df), names=top_n_df.loc[:, 'Known as'].values,
+                 zip=zip, received=True, column_names=top_n_df.columns.values, row_data=list(top_n_df.values.tolist())) 
 
 
         if request.form['submit'] == 'Add and Remove These!':
@@ -221,8 +223,7 @@ def ner(**kwargs):
             book_dict['names_dict'] = names_dict
 
 
-            with open(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl', 'wb') as f:
-                pickle.dump(book_dict, f)
+            save_book_dict(book_dict)
 
 
             sorted_flatten_names_dict = analyzer.flatten_names(names_dict)
@@ -230,12 +231,11 @@ def ner(**kwargs):
             top_n_df = df.iloc[:n, :]
 
 
-            return render_template('ner.html', length=len(df), top_n_popular_names=top_n_df, zip=zip, received=True,
+            return render_template('ner.html', length=len(df), names=top_n_df.loc[:, 'Known as'].values, zip=zip, received=True,
             column_names=top_n_df.columns.values, row_data=list(top_n_df.values.tolist())) 
 
 
         if request.form['submit'] == "No problem! Go to the next step!":
-
             return redirect(url_for('cooccurance', received=None)) 
 
 
