@@ -10,11 +10,9 @@ from afinn import Afinn
 from charset_normalizer import from_path
 from itertools import chain 
 from werkzeug.utils import secure_filename
-
-pd.set_option('display.float_format','{:.2f}'.format)
-
-
 from BookAnalyzer import Book_analyzer
+
+app = Flask(__name__)
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -30,22 +28,24 @@ def normalize_text(file_path):
     book_content = str(raw_file.best())
     return book_content
 
-
+def save_book_dict(book_dict):
+    with open(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl', 'wb') as f:
+        pickle.dump(book_dict, f)
 # Flask ----------------------------------------------------------------
-app = Flask(__name__)
+
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
     
     if request.method=='POST':
-        return redirect(url_for('character_net'))
+        return redirect(url_for('input_info'))
         
     return render_template('index.html')
 
 
 
-@app.route('/character_net', methods=['POST', 'GET'])
-def character_net(**kwargs):
+@app.route('/input_info', methods=['POST', 'GET'])
+def input_info(**kwargs):
 
     error = None
     book_dict = {}
@@ -104,24 +104,11 @@ def character_net(**kwargs):
                 book_dict['finalized_sents'] = finalized_sents
                 book_dict['number_of_sentences'] = len(finalized_sents)
 
+                save_book_dict(book_dict)
 
-                with open(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl', 'wb') as f:
-                    pickle.dump(book_dict, f)
-                
+                return render_template('book_info.html', length=book_dict['number_of_sentences'])
 
-                return render_template('character_net.html', received=True,
-                 length=book_dict['number_of_sentences'])
-
-        if request.form['submit'] == "Go to Sentiment Analysis!":
-
-            return redirect(url_for('senti_analysis'))
-
-        if request.form['submit'] == "Go to Named Entity recognition!":
-
-            return redirect(url_for('senti_analysis'))
-
-
-    else: return render_template('character_net.html', error=error)
+    else: return render_template('input_info.html', error=error)
 
     
 @app.route('/senti_analysis', methods=['POST', 'GET'])

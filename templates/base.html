@@ -46,18 +46,26 @@
         <br>
 
 
+      <!--This is the error flash-->
+      <div class="container">
+          <br><br><br>
+        {% for message in get_flashed_messages() %}
+
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+        {% endfor %}
+
+        {% block page_content %}{% endblock %}
+      </div>
+
+      <!--This is the error flash-->
+
+
         {% block content %}
         {% endblock %}
-        
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul class=flashes>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-        {% endwith %}
+    
 
 
 

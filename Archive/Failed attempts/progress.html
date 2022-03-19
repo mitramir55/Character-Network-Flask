@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+<br>
+<div class="masthead-content">
+    <div class="container px-5">
+<hr>
+
+  <h1>The importance of characters</h1>
+  <p>This plot is generated using Plotly, but it is not a dash app.</p>
+  <div id='chart' class='chart'”></div>
+</body>
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+  var graphs = {{ graphJSON | safe }};
+  Plotly.plot('chart',graphs,{});
+</script>
+</html>
+
+
+
+</div>
+</div>
+
+<br> <br>
+<form action="#"  method="post" enctype="multipart/form-data">
+    <p>Now, let's put everything together and see the result! ⭐ 
+        <input type="text" name="n"></p>
+    <p><input type="submit" name="submit" value="Find the Names!"  class="btn btn-success"></p>
+</form>
+
+<br>
+{% endblock %}
+
+
