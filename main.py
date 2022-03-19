@@ -9,7 +9,7 @@ import os, io, csv, sys, pickle, time
 from afinn import Afinn
 from charset_normalizer import from_path
 from itertools import chain 
-
+from werkzeug.utils import secure_filename
 
 pd.set_option('display.float_format','{:.2f}'.format)
 
@@ -20,6 +20,15 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def save_file(file, filename):
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(file_path)
+    return file_path
+
+def normalize_text(file_path):
+    raw_file = from_path(file_path)
+    book_content = str(raw_file.best())
+    return book_content
 
 
 # Flask ----------------------------------------------------------------
@@ -59,13 +68,12 @@ def character_net(**kwargs):
                 flash('No selected file!')
                 return redirect(url_for('character_net', error=True))
 
-
             # check the name
             elif not allowed_file(book_content_file.filename): 
                 flash('please provide a file with txt extention.') 
                 return redirect(url_for('character_net', error=True))
             
-            # chapter name and title 
+            # check chapter name and title 
             for (k, v) in {'chapter': 'chapter_regex', 'title':'book_title'}.items():
                 if not request.form[v]:
                     flash(f'Please provide the {k} description!')
@@ -79,45 +87,30 @@ def character_net(**kwargs):
                 book_dict['book_title'] = request.form['book_title']
 
                 # saving the content as a text file
-                file_path = os.path.join(app.config['UPLOAD_FOLDER'] + 'file_content.txt')
-                book_content_file.save(file_path)
-
-                results = from_path(file_path)
-                book_content = str(results.best())
-
-                # store the content in the dict
+                filename = secure_filename(book_content_file.filename)
+                file_path = save_file(book_content_file, filename)
+                book_content = normalize_text(file_path)
                 book_dict['book_content'] = book_content
 
+
                 chapter_regex = request.form["chapter_regex"]
-                
                 book_dict['chapter_regex'] = chapter_regex
 
                 # analysis --------------------------------
-                analyzer = Book_analyzer()
-
-                # ask the user to add to this  cu_patterns_to_remove 
+                analyzer = Book_analyzer() 
                 book_content_cleaned = analyzer.clean_content(book_content=book_content, cu_patterns_to_remove = ['¡¡¡¡'])
-                
-                
-                #here should be the progress bar ===========================================
-                    
-                # detect sents
                 book_sentences = analyzer.spacy_detect_sentences(book_content_cleaned)
-
-                # clean the sentences
                 finalized_sents = analyzer.clean_sentences(book_sentences, chapter_regex = chapter_regex)
-
-                
                 book_dict['finalized_sents'] = finalized_sents
-
-                length = len(finalized_sents)
-                book_dict['number_of_sentences'] = length
+                book_dict['number_of_sentences'] = len(finalized_sents)
 
 
                 with open(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl', 'wb') as f:
                     pickle.dump(book_dict, f)
+                
 
-                return render_template('character_net.html', received=True, length=length)
+                return render_template('character_net.html', received=True,
+                 length=book_dict['number_of_sentences'])
 
         if request.form['submit'] == "Go to Sentiment Analysis!":
 
