@@ -14,11 +14,13 @@ from itertools import chain
 import string
 from collections import Counter
 from typing import Tuple
-pd.set_option('display.max_colwidth', None)
 
+# for scraping
+from bs4 import BeautifulSoup
+import requests
+from googlesearch import search
 
-
-class Book_analyzer:
+class Book_content_analyzer:
 
     def __init__(self, spacy_model='en_core_web_sm') -> None:
 
@@ -26,8 +28,6 @@ class Book_analyzer:
 
 
     def clean_content(self, book_content:str, cu_patterns_to_remove:list = []) -> str:
-
-        """ Cleans the text of the book """
 
         # remove punctuations
         punctuation = re.sub(r"[\?\!\,\.\'\,\:\;]", '', string.punctuation)
@@ -58,79 +58,47 @@ class Book_analyzer:
         return sentences
 
 
-            
-    def spacy_detect_sentences_editted(self, list_corpus:str)->list:
-
-        """
-        Detect sentences with spacy outputs the list of sentences
-        """
-        all_sentences = []
-        #Doc = nlp(corpus)
-        #sentences = [str(i) for i in list(Doc.sents)]
-        for record_doc in self.nlp.pipe(list_corpus, batch_size=100, n_process = 1):
-            sentences = list(record_doc.sents)
-            sentences = [str(sentence) if len(sentence)>=2 else 'Not a Sentence' for sentence in sentences] 
-            all_sentences.append(sentences)
-
-        return all_sentences
-
-
-    
     def clean_sentences(self, sentences:list, chapter_regex:str = 'no chapter')->list:
         '''
         check for "chapter" and separate it from its span
         flatten this list of sentences
-        remove the small ones
-        outputs the sentences
+        outputs correct sentences
         '''    
 
-        # if the content didn't have chapters
+        # without chapters
         if chapter_regex=='no chapter': return sentences
 
-        # if it was a chapter-based book
+        # with chapter
         elif chapter_regex:
             for i, sent in enumerate(sentences): 
                 if re.findall(chapter_regex,  sent):
                     sentences[i] = re.split(f' *({chapter_regex})+ *' ,sent)
 
+            finalized_sents = []
+            # flatten the lists (these were created after separating the chapter regex from sents)
+            for i, sent in enumerate(sentences):
+                if type(sent) == list:
+                    for s in sent: finalized_sents.append(s.strip())
+                else: finalized_sents.append(sent.strip())
 
+    
+            unwanted_sents_idx = []
+            for i, sentence in enumerate(finalized_sents): 
 
-        finalized_sents = []
+                # chapter regex and number after it
+                if re.match(f'.*{chapter_regex} *$', sentence.strip()):
+                    unwanted_sents_idx.append(i+1)
+                    finalized_sents[i] = finalized_sents[i] + finalized_sents[i+1]
+                else:
+                    unwanted_sents_idx.append(i)
 
-        # flatten the lists (these were created after separating the chapter regex from sents)
-        for i, sent in enumerate(sentences):
-            if type(sent) == list:
-                for s in sent: finalized_sents.append(s.strip())
-            else: finalized_sents.append(sent.strip())
+            for i in reversed(unwanted_sents_idx):
+                del finalized_sents[i]
 
-        # remove unwanted sentences
-        unwanted = []
-        for i, sentence in enumerate(finalized_sents): 
-
-            # only two words
-            if re.match(r'.*\w+.*\w+.*', sentence):
-                continue
-
-            # chapter regex and number after it
-            if re.match(f'.*{chapter_regex} *$', sentence.strip()):
-                unwanted.append(i+1)
-                finalized_sents[i] = finalized_sents[i] + finalized_sents[i+1]
-                
-            else:
-                unwanted.append(i)
-
-        for i in reversed(unwanted):
-            del finalized_sents[i]
-
-        # len_sents = len(finalized_sents)
-        # print(f'This text has {len_sents:.2f} sentences!')
-
-        return finalized_sents
+            return finalized_sents
 
 
     # sentiment analysis --------------------------------------------------------------
-
-
     def decide_for_transformer_sentiment_label(self, senti_dicts:dict) ->list:
         """
         takes in dictionaries of sentiment analysis
@@ -157,11 +125,6 @@ class Book_analyzer:
 
         return labels, encoded_lables
 
-
-
-
-    # sentiment analysis on sentences
-    # we use gpu for this task
 
     def senti_analysis_transformers(self, sentences:list, plot=False):
 
@@ -228,7 +191,6 @@ class Book_analyzer:
 
 
     # ner ----------------------------------------------------------------------------------
-
     def find_most_pop_names(self, list_sents:list)->dict:
         '''
         first for loop: takes out the names
@@ -331,24 +293,19 @@ class Book_analyzer:
         return names_dict
 
 
-
     def _zero_diag(self, mat:np.matrix) -> np.matrix:
         diag_range = mat.shape[0]
         mat[[range(diag_range)], [range(diag_range)]] = 0
         return mat
-
     def _zero_below_threshold(self, mat:np.matrix, threshold:int) -> np.matrix:
         # zero out when the characters don't have a certain number of sentences
         # in which they both appeared
         for [i,j] in  np.argwhere(mat<=threshold) :
             mat[i,j] = 0
         return mat
-
-        
     def _divide_by_max(self, mat:np.matrix) -> np.matrix:
         return mat / np.max(np.abs(mat))
-
-    def reduce_numbers(self, mat)->np.matrix:
+    def _reduce_numbers(self, mat)->np.matrix:
 
         """
         reduces the number of decimals that appear after each number
@@ -359,11 +316,9 @@ class Book_analyzer:
         s2 = mat.shape[1]
         for i in range(s1):
             for j in range(s2):
-                mat[i,j] = round(mat[i,j], 3)\
+                mat[i,j] = round(mat[i,j], 3)
 
         return mat
-
-
 
 
     def create_cooccurrence_matrices(self, top_n_popular_names:list, book_sents:list, encoded_senti_labels:list,
@@ -414,16 +369,11 @@ class Book_analyzer:
             cooccurrence_matrix_with_senti = self._divide_by_max(cooccurrence_matrix_with_senti)
             cooccurrence_matrix = self._divide_by_max(cooccurrence_matrix)
 
-        cooccurrence_matrix = self.reduce_numbers(cooccurrence_matrix)
-        cooccurrence_matrix_with_senti = self.reduce_numbers(cooccurrence_matrix_with_senti)
+        cooccurrence_matrix = self._reduce_numbers(cooccurrence_matrix)
+        cooccurrence_matrix_with_senti = self._reduce_numbers(cooccurrence_matrix_with_senti)
 
 
         return pop_names_df, cooccurrence_matrix, cooccurrence_matrix_with_senti
-
-
-
-
-
 
 
     def matrix_to_edge(self, cooccurrence_matrix:np.matrix, cooccurrence_matrix_with_senti:np.matrix,
@@ -487,4 +437,50 @@ class Book_analyzer:
 
         return graphJSON
 
+
+
+class Book_info_scraper:
+
+    def __init__(self) -> None:
+        pass
+    
+    def find_genres(self, soup):
+
+        all_genres = []
+        for x in soup.find_all("a", { "class" : "actionLinkLite bookPageGenreLink" }):
+            all_genres.append(x.get_text())
+        all_genres = [genre for genre in all_genres if genre.lower()!= 'audiobook']
+
+        return all_genres
+
+
+    def find_reviews_and_ratings(self, soup):
+
+        text = soup.find_all("div", { "class" : "reviewControls--left greyText" })[0].get_text().strip()
+
+        text = re.sub('\n', ' ', text)
+        text = re.sub('( \s+)', ' ', text)
+
+        ratings = re.findall('[\d\,]* ratings',text)
+        reviews = re.findall('[\d\,]* reviews',text)
+
+        return reviews, ratings
+
+    def find_author(self, soup):
+        return soup.find_all("a", { "class" : "authorName" })[0].get_text()
+
+
+    def get_goodreads_info(self, book_name):
+
+        query = book_name + ' goodreads'
+
+        url = next(search(query, tld="co.in", num=1, stop=1))
+        resp = requests.get(url)
+        soup = BeautifulSoup(resp.content, 'html.parser')
+
+        genres = self.find_genres(soup)
+        reviews, ratings = self.find_reviews_and_ratings(soup)
+        author = self.find_author(soup)
+
+        return genres, reviews, ratings, author
 

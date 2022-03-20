@@ -11,7 +11,7 @@ from afinn import Afinn
 from charset_normalizer import from_path
 from itertools import chain 
 from werkzeug.utils import secure_filename
-from BookAnalyzer import Book_analyzer
+from BookAnalyzer import Book_content_analyzer, Book_info_scraper
 import plotly
 
 app = Flask(__name__)
@@ -33,9 +33,12 @@ def normalize_text(file_path):
 def save_book_dict(book_dict):
     with open(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl', 'wb') as f:
         pickle.dump(book_dict, f)
+
+def read_book_dict():
+    book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
+    return book_dict
+
 # Flask ----------------------------------------------------------------
-
-
 @app.route('/', methods=['POST', 'GET'])
 def index():
     
@@ -43,7 +46,6 @@ def index():
         return redirect(url_for('input_info'))
         
     return render_template('index.html')
-
 
 
 @app.route('/input_info', methods=['POST', 'GET'])
@@ -62,7 +64,6 @@ def input_info(**kwargs):
             if not request.files["book_content"]: 
                 flash('Please provide the book content!')
                 return redirect(url_for('input_info', error=True))
-
 
             book_content_file = request.files["book_content"]
 
@@ -85,7 +86,6 @@ def input_info(**kwargs):
             # if everything was ok
             if request.form['book_title'] and request.files['book_content']:
 
-                # title 
                 book_dict['book_title'] = request.form['book_title']
 
                 # saving the content as a text file
@@ -99,7 +99,7 @@ def input_info(**kwargs):
                 book_dict['chapter_regex'] = chapter_regex
 
                 # analysis --------------------------------
-                analyzer = Book_analyzer() 
+                analyzer = Book_content_analyzer() 
                 book_content_cleaned = analyzer.clean_content(book_content=book_content, cu_patterns_to_remove = ['¡¡¡¡'])
                 book_sentences = analyzer.spacy_detect_sentences(book_content_cleaned)
                 finalized_sents = analyzer.clean_sentences(book_sentences, chapter_regex = chapter_regex)
@@ -116,21 +116,28 @@ def input_info(**kwargs):
 def book_info(**kwargs):
     if request.method=='POST': 
         return redirect(url_for('senti_analysis'))
-    else: return render_template('book_info.html')
+
+    else: 
+        book_dict = read_book_dict()
+        book_scraper = Book_info_scraper()
+        genres, reviews, ratings, author = book_scraper.get_goodreads_info(name=book_dict['book_title'])
+
+
+        return render_template('book_info.html', genres=genres, reviews=reviews,
+         ratings=ratings, author=author, book_title=book_dict['book_title'])
 
 
 @app.route('/senti_analysis', methods=['POST', 'GET'])
 def senti_analysis(**kwargs):
 
-    
     if request.method=='POST': 
 
         # afinn ----------------------------------------------------------
         if request.form['submit'] == "Go with Afinn!":
 
             # analysis --------------------------------
-            analyzer = Book_analyzer()
-            book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
+            analyzer = Book_content_analyzer()
+            book_dict = read_book_dict()
             sentiment_lables, encoded_sentiment_labels, emotions_count = analyzer.senti_analysis_Afinn(sentence_list=book_dict['finalized_sents'])        
             
             book_dict['sentiment_lables'] = sentiment_lables
