@@ -461,14 +461,23 @@ class Book_info_scraper:
         text = re.sub('\n', ' ', text)
         text = re.sub('( \s+)', ' ', text)
 
-        ratings = re.findall('[\d\,]* ratings',text)
-        reviews = re.findall('[\d\,]* reviews',text)
+        ratings = re.findall('[\d\,]* ratings',text)[0]
+        reviews = re.findall('[\d\,]* reviews',text)[0]
 
         return reviews, ratings
 
     def find_author(self, soup):
         return soup.find_all("a", { "class" : "authorName" })[0].get_text()
 
+    def find_year_published(self, soup):
+    
+        text = soup.find_all("div", { "class" : "uitext darkGreyText"})[0].get_text()
+
+        text = re.sub('\n', ' ', text)
+        text = re.sub('( \s+)', ' ', text)
+        year_published = re.findall('Published \w+ \w+ (\d+)', text)[0]
+        
+        return year_published
 
     def get_goodreads_info(self, book_name):
 
@@ -481,6 +490,7 @@ class Book_info_scraper:
         genres = self.find_genres(soup)
         reviews, ratings = self.find_reviews_and_ratings(soup)
         author = self.find_author(soup)
+        year_published = self.find_year_published(soup)
 
-        return genres, reviews, ratings, author
+        return genres, reviews, ratings, author, year_published
 

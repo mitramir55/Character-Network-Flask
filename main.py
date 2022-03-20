@@ -93,22 +93,11 @@ def input_info(**kwargs):
                 file_path = save_file(book_content_file, filename)
                 book_content = normalize_text(file_path)
                 book_dict['book_content'] = book_content
-
-
-                chapter_regex = request.form["chapter_regex"]
-                book_dict['chapter_regex'] = chapter_regex
-
-                # analysis --------------------------------
-                analyzer = Book_content_analyzer() 
-                book_content_cleaned = analyzer.clean_content(book_content=book_content, cu_patterns_to_remove = ['¡¡¡¡'])
-                book_sentences = analyzer.spacy_detect_sentences(book_content_cleaned)
-                finalized_sents = analyzer.clean_sentences(book_sentences, chapter_regex = chapter_regex)
-                book_dict['finalized_sents'] = finalized_sents
-                book_dict['number_of_sentences'] = len(finalized_sents)
+                book_dict['chapter_regex']  = request.form["chapter_regex"]
 
                 save_book_dict(book_dict)
 
-                return redirect(url_for('book_info', length=book_dict['number_of_sentences']))
+                return redirect(url_for('book_info'))
 
     else: return render_template('input_info.html', error=error)
 
@@ -119,12 +108,23 @@ def book_info(**kwargs):
 
     else: 
         book_dict = read_book_dict()
+
+        # analysis --------------------------------
+        analyzer = Book_content_analyzer() 
+        book_content_cleaned = analyzer.clean_content(book_content=book_dict['book_content'], cu_patterns_to_remove = ['¡¡¡¡'])
+        book_sentences = analyzer.spacy_detect_sentences(book_content_cleaned)
+        finalized_sents = analyzer.clean_sentences(book_sentences, chapter_regex = book_dict['chapter_regex'])
+        book_dict['finalized_sents'] = finalized_sents
+        book_dict['number_of_sentences'] = len(finalized_sents)
+
+        # scrape-----------------------------------
         book_scraper = Book_info_scraper()
-        genres, reviews, ratings, author = book_scraper.get_goodreads_info(name=book_dict['book_title'])
+        genres, reviews, ratings, author, year_published = book_scraper.get_goodreads_info(book_name=book_dict['book_title'])
 
 
         return render_template('book_info.html', genres=genres, reviews=reviews,
-         ratings=ratings, author=author, book_title=book_dict['book_title'])
+         ratings=ratings, author=author, year_published=year_published, length=book_dict['number_of_sentences'],
+          book_title=book_dict['book_title'])
 
 
 @app.route('/senti_analysis', methods=['POST', 'GET'])
