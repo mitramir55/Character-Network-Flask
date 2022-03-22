@@ -121,6 +121,7 @@ def book_info(**kwargs):
         book_scraper = Book_info_scraper()
         genres, reviews, ratings, author, year_published = book_scraper.get_goodreads_info(book_name=book_dict['book_title'])
 
+        read_book_dict()
 
         return render_template('book_info.html', genres=genres, reviews=reviews,
          ratings=ratings, author=author, year_published=year_published, length=book_dict['number_of_sentences'],
