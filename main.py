@@ -163,6 +163,8 @@ def senti_analysis(**kwargs):
             sentiment_lables = pd.read_pickle(properties_folder_path + r'\sentiment_lables.pkl')
             encoded_sentiment_labels = pd.read_pickle(properties_folder_path + r'\emotions_count.pkl')
             emotions_count = pd.read_pickle(properties_folder_path + r'\emotions_count.pkl')
+            
+            save_book_dict(book_dict)
 
             return render_template('senti_analysis.html',
                 received=True, sentiment_lables=sentiment_lables, 
@@ -253,7 +255,7 @@ def cooccurance(**kwargs):
     if request.method=='POST': 
         if request.form['submit'] == "Give me the Cooccurrence!":
             
-            book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
+            book_dict = read_book_dict()
             analyzer = Book_content_analyzer()
             n = book_dict['top_n']
             top_n_popular_names = list(book_dict['names_dict'].keys())[:n]
