@@ -144,11 +144,7 @@ def senti_analysis(**kwargs):
             book_dict['sentiment_lables'] = sentiment_lables
             book_dict['encoded_sentiment_labels'] = encoded_sentiment_labels
             book_dict['emotions_count'] = emotions_count
-
-            
-            with open(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl', 'wb') as f:
-                pickle.dump(book_dict, f)
-
+            save_book_dict(book_dict)
 
             return render_template('senti_analysis.html',
                 received=True, sentiment_lables=sentiment_lables, 
@@ -196,7 +192,7 @@ def ner(**kwargs):
                 book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
                 n = int(request.form['n'])
 
-                analyzer = Book_analyzer()
+                analyzer = Book_content_analyzer()
                 sorted_names_dict = analyzer.find_most_pop_names(list_sents=book_dict['finalized_sents'])
                 sorted_flatten_names_dict = analyzer.flatten_names(sorted_names_dict)
 
@@ -216,7 +212,7 @@ def ner(**kwargs):
 
         if request.form['submit'] == 'Add and Remove These!':
 
-            analyzer=Book_analyzer()
+            analyzer=Book_content_analyzer()
             missed_names = request.form['unrecognized_names']
             extra_names = request.form['extra_names']
             book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
@@ -258,7 +254,7 @@ def cooccurance(**kwargs):
         if request.form['submit'] == "Give me the Cooccurrence!":
             
             book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
-            analyzer = Book_analyzer()
+            analyzer = Book_content_analyzer()
             n = book_dict['top_n']
             top_n_popular_names = list(book_dict['names_dict'].keys())[:n]
 
@@ -300,7 +296,7 @@ def cooccurance(**kwargs):
             if request.form['n_sections']:
                 n_sections = request.form['n_sections']
                 book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
-                analyzer = Book_analyzer()
+                analyzer = Book_content_analyzer()
                 n = book_dict['top_n']
                 top_n_popular_names = list(book_dict['names_dict'].keys())[:n]
 
@@ -316,7 +312,7 @@ def cooccurance(**kwargs):
 def progress():
 
     if request.form['submit'] == 'Generate the Graph!':
-        analyzer = Book_analyzer()
+        analyzer = Book_content_analyzer()
         book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
         n = book_dict['top_n']
         top_n_popular_names = list(book_dict['names_dict'].keys())[:n]
