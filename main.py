@@ -38,6 +38,17 @@ def read_book_dict():
     book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
     return book_dict
 
+def find_not_detected_names(missing_names:str, names_dict:dict)->list:
+    # if missing_names were not found
+    not_found_names = []
+    missing_names_list = [name.strip() for name in list(missing_names.split(','))]
+    for name in missing_names_list:
+        if name not in names_dict.keys():
+            not_found_names.append(name)
+
+    return not_found_names
+
+
 # Flask ----------------------------------------------------------------
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -235,6 +246,12 @@ def ner(**kwargs):
             sorted_flatten_names_dict = analyzer.flatten_names(names_dict)
             df = pd.DataFrame({'Rank':i, 'Known as':k, 'Num. of Appearances':v} for i, (k,v) in enumerate(sorted_flatten_names_dict.items()))
             top_n_df = df.iloc[:n, :]
+
+            not_found_names = find_not_detected_names(missing_names, names_dict)
+            if not_found_names != []:
+                for name in not_found_names:
+                    flash(f'Name {name} was not found!')
+
 
 
             return render_template('ner.html', length=len(df), names=top_n_df.loc[:, 'Known as'].values, zip=zip, received=True,

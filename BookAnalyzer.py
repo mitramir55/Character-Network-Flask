@@ -14,7 +14,7 @@ from itertools import chain
 import string
 from collections import Counter, defaultdict
 from typing import Tuple
-
+import plotly
 # for scraping
 from bs4 import BeautifulSoup
 import requests
