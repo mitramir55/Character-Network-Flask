@@ -12,7 +12,7 @@ import plotly.express as px
 from sklearn.feature_extraction.text import CountVectorizer
 from itertools import chain 
 import string
-from collections import Counter
+from collections import Counter, defaultdict
 from typing import Tuple
 
 # for scraping
@@ -202,65 +202,55 @@ class Book_content_analyzer:
 
         titles = ['Great Uncle', 'Uncle', 'Aunt', "'s", "Mister", "Mistress", "professor", r' \w\. *']
 
-        names_dict = {}
+        names_dict = defaultdict(int)
         for doc in self.nlp.pipe(list_sents):
             for ent_ in doc.ents:
                 if ent_.label_ == 'PERSON':
-                    #print('doc object text (doc.text) = ', doc.text)
-                    #print('name detected by spacy (ent.text) = ', ent_.text)
 
-                    # remove 'd 'm from names if there were any
+                    # remove ...'d ...'m from list of names expample: "who'd"
                     initial_name = ent_.text
                     if re.findall(pattern=f" *[{string.punctuation}’”]\w *", string=initial_name):
                         pass
                     else:
                         name_per = ent_.text.strip()
-                        
+
                         for title in titles: 
-                            name_per = re.sub(' *' + title + ' *', '', name_per)
-                        
-                        if name_per in names_dict.keys():
-                            names_dict[name_per] += 1
-                        else: names_dict[name_per] = 1
+                            name_per = re.sub(title, '', name_per)
+                        names_dict[name_per] += 1
+                            
         names_dict = {k:v for k, v in sorted(names_dict.items(), key=lambda i : i[1], reverse=True)}
         return names_dict
 
 
-    def add_or_remove_names(self, list_sents:list, names_dict:dict, extra_names:str, missed_names)->dict:
+    def add_or_remove_names(self, list_sents:list, names_dict:dict, unwanted_names:str, missing_names:str)->dict:
         """
         inputs the previous dictionary and the name that was not recognized
         I can also use tfidf, but I think this is a better approach
         """
+        
+        names_dict = defaultdict(int, names_dict)
 
-        # remove extras from names_dict-------------------------------------------------
-        if extra_names:
-            unwanted_names = []
+        if unwanted_names:
+            unwanted_names_in_dict = []
+            dict_names = list(names_dict.keys())
+            unwanted_names = [name.strip() for name in list(unwanted_names.split(','))]
 
-            extra_names = list(extra_names.split(','))
+            for dict_name in dict_names:
+                for name in unwanted_names:
 
-            for cap_name in list(names_dict.keys()):
-                for user_name in extra_names:
-
-                    if cap_name.lower().strip() == user_name.lower().strip():
-                        unwanted_names.append(cap_name)
-                        del names_dict[cap_name]
-
+                    if name.lower() == dict_name.lower():
+                        unwanted_names_in_dict.append(dict_name)
+                        del names_dict[dict_name]
 
 
+        if missing_names:
+            missing_names_list = [name.strip() for name in list(missing_names.split(','))]
 
-        # add missed ones from sents list to dict-------------------------------------
-        if missed_names:
-            missed_names_list = list(missed_names.split(','))
-
-            for name in missed_names_list:
+            for name in missing_names_list:
                 for sent in list_sents:
                     matches = re.findall(pattern=name.strip(), string=sent)
                     if matches:
-                        if name in names_dict.keys():
-                            names_dict[name] += len(matches)
-                        else: names_dict[name] = 1
-                        
-                    else: pass
+                        names_dict[name] += len(matches)
 
         new_names_dict = {k:v for k, v in sorted(names_dict.items(), key=lambda i : i[1], reverse=True)}
 

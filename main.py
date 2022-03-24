@@ -215,16 +215,16 @@ def ner(**kwargs):
         if request.form['submit'] == 'Add and Remove These!':
 
             analyzer=Book_content_analyzer()
-            missed_names = request.form['unrecognized_names']
-            extra_names = request.form['extra_names']
+            missing_names = request.form['unrecognized_names']
+            unwanted_names = request.form['extra_names']
             book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
             n = book_dict['top_n']
 
             names_dict = analyzer.add_or_remove_names(
                 list_sents=book_dict['finalized_sents'],
                 names_dict=book_dict['names_dict'], 
-                extra_names=extra_names,
-                missed_names=missed_names)
+                unwanted_names=unwanted_names,
+                missing_names=missing_names)
 
             book_dict['names_dict'] = names_dict
 
