@@ -150,17 +150,17 @@ def senti_analysis(**kwargs):
             # analysis --------------------------------
             analyzer = Book_content_analyzer()
             book_dict = read_book_dict()
-            sentiment_lables, encoded_sentiment_labels, emotions_count = analyzer.senti_analysis_Afinn(sentence_list=book_dict['finalized_sents'])        
+            sentiment_lables, encoded_sentiment_labels, emotions_count_dict = analyzer.senti_analysis_Afinn(sentence_list=book_dict['finalized_sents'])        
             
             book_dict['sentiment_lables'] = sentiment_lables
             book_dict['encoded_sentiment_labels'] = encoded_sentiment_labels
-            book_dict['emotions_count'] = emotions_count
+            book_dict['emotions_count_dict'] = emotions_count_dict
             save_book_dict(book_dict)
 
             return render_template('senti_analysis.html',
                 received=True, sentiment_lables=sentiment_lables, 
                 encoded_sentiment_labels =encoded_sentiment_labels,
-                emotions_count=emotions_count)
+                emotions_count_dict=emotions_count_dict)
 
         # transformers ----------------------------------------------------------
         if request.form['submit'] == "Go with TransformerS!":

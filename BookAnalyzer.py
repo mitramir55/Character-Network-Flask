@@ -176,18 +176,18 @@ class Book_content_analyzer:
             encoded_labels.append(afn.score(sent)/5)
         
 
-        labels = sentiment = [
-            'POSITIVE' if score > 0 
-            else 'NEGATIVE' if score < 0 
-            else 'NEUTRAL' 
+        labels = [
+            'Positive' if score > 0 
+            else 'Negative' if score < 0 
+            else 'Neutral' 
             for score in encoded_labels
             ]
 
         
         # count the labels
-        emotions_count = dict(Counter(labels))
+        emotions_count_dict = dict(Counter(labels))
         
-        return labels, encoded_labels, emotions_count
+        return labels, encoded_labels, emotions_count_dict
 
 
     # ner ----------------------------------------------------------------------------------

@@ -28,17 +28,37 @@
         <br>
         <br>
         {% if received %}
+
+        <!--Here comes the chart properties-->
+        
+<script type="module">
+    import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+    import define from "https://api.observablehq.com/@mitramir55/bar-chart.js?v=3";
+    
+    
+    const main = new Runtime().module(define, name => {
+      if (name === "ourchart") {
+        return new Inspector(document.querySelector("#observablehq-ourchart-61d40e85"));
+      }
+    });
+    </script>
+
+
+
         <p>Distribution of sentences' emotions in this novel: </p>
-        <p><span style="color: rgb(20, 190, 97);">Positive:  </span> {{ emotions_count['POSITIVE'] }}</p> 
-        <p><span style="color: rgb(0, 140, 255);">Neutral:  </span>  {{ emotions_count['NEUTRAL'] }}</p> 
-        <p><span style="color: rgb(114, 35, 88);">Negative:  </span> {{ emotions_count['NEGATIVE'] }}</p> 
+        <p><span style="color: rgb(20, 190, 97);">Positive:  </span> {{ emotions_count_dict['POSITIVE'] }}</p> 
+        <p><span style="color: rgb(0, 140, 255);">Neutral:  </span>  {{ emotions_count_dict['NEUTRAL'] }}</p> 
+        <p><span style="color: rgb(114, 35, 88);">Negative:  </span> {{ emotions_count_dict['NEGATIVE'] }}</p> 
 
         
+        <div id="observablehq-ourchart-61d40e85"></div>
         
         <form action="#"  method="post" enctype="multipart/form-data">
             <input type="submit" name="submit" value="Named Entity Recognition"  class="btn btn-success">
         </form>
         <br><br>
+        
+
 
         {% endif %}
 
