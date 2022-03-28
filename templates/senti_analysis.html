@@ -41,14 +41,16 @@
         return new Inspector(document.querySelector("#observablehq-ourchart-61d40e85"));
       }
     });
+    var newData = {{new_emotions_data|tojson}}
+    main.redefine("emotionsData", newData);
     </script>
 
 
 
         <p>Distribution of sentences' emotions in this novel: </p>
-        <p><span style="color: rgb(20, 190, 97);">Positive:  </span> {{ emotions_count_dict['POSITIVE'] }}</p> 
-        <p><span style="color: rgb(0, 140, 255);">Neutral:  </span>  {{ emotions_count_dict['NEUTRAL'] }}</p> 
-        <p><span style="color: rgb(114, 35, 88);">Negative:  </span> {{ emotions_count_dict['NEGATIVE'] }}</p> 
+        <p><span style="color: rgb(20, 190, 97);">Positive:  </span> {{ emotions_count_dict['Positive'] }}</p> 
+        <p><span style="color: rgb(0, 140, 255);">Neutral:  </span>  {{ emotions_count_dict['Neutral'] }}</p> 
+        <p><span style="color: rgb(114, 35, 88);">Negative:  </span> {{ emotions_count_dict['Negative'] }}</p> 
 
         
         <div id="observablehq-ourchart-61d40e85"></div>

@@ -157,10 +157,18 @@ def senti_analysis(**kwargs):
             book_dict['emotions_count_dict'] = emotions_count_dict
             save_book_dict(book_dict)
 
+            new_emotions_data = []
+            for emotion, value in emotions_count_dict.items():
+                print(emotion)
+                dict_ = {}
+                dict_["emotion"] = emotion
+                dict_["count"] = value
+                new_emotions_data.append(dict_)
+
             return render_template('senti_analysis.html',
                 received=True, sentiment_lables=sentiment_lables, 
                 encoded_sentiment_labels =encoded_sentiment_labels,
-                emotions_count_dict=emotions_count_dict)
+                emotions_count_dict=emotions_count_dict, new_emotions_data=new_emotions_data)
 
         # transformers ----------------------------------------------------------
         if request.form['submit'] == "Go with TransformerS!":
