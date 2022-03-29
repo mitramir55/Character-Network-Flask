@@ -278,6 +278,9 @@ def ner(**kwargs):
 def cooccurance(**kwargs):
 
     if request.method=='POST': 
+        if request.form['submit'] == "progress of Characters":
+            return redirect(url_for("progress", received=None))
+
         if request.form['submit'] == "Give me the Cooccurrence!":
             
             book_dict = read_book_dict()
@@ -314,22 +317,6 @@ def cooccurance(**kwargs):
                             row_data_2=list(cooccurrence_df_with_senti.values.tolist()),
                             )
 
-        if request.form['submit'] == "See the progress of characters...":
-
-            if not request.form['n_sections']:
-                flash('Please enter the number of sections!', received=None)
-                return render_template('cooccurance.html')
-
-            if request.form['n_sections']:
-                n_sections = request.form['n_sections']
-                book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
-                analyzer = Book_content_analyzer()
-                n = book_dict['top_n']
-                top_n_popular_names = list(book_dict['names_dict'].keys())[:n]
-
-                graphJSON  = analyzer.create_plot_df(top_n_popular_names=top_n_popular_names,
-                 pop_names_df=book_dict['pop_names_df'], n_sections=n_sections)
-                return render_template('progress.html', graphJSON=graphJSON) 
         
     else: return render_template('cooccurance.html', received=None)
 
@@ -338,20 +325,41 @@ def cooccurance(**kwargs):
 @app.route('/progress', methods=['POST', 'GET'])
 def progress():
 
-    if request.form['submit'] == 'Generate the Graph!':
-        analyzer = Book_content_analyzer()
-        book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
-        n = book_dict['top_n']
-        top_n_popular_names = list(book_dict['names_dict'].keys())[:n]
+    if request.method=='POST': 
+
+        if request.form["submit"] == "See the progress of characters...":
+            
+            if not request.form['n_sections']:
+                flash('Please enter the number of sections!', received=None)
+                return render_template('progress.html')
+
+            if request.form['n_sections']:
+                n_sections = request.form['n_sections']
+                book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
+                analyzer = Book_content_analyzer()
+                n = book_dict['top_n']
+                top_n_popular_names = list(book_dict['names_dict'].keys())[:n]
+
+                plotly_graphJSON  = analyzer.create_plot_df(top_n_popular_names=top_n_popular_names,
+                pop_names_df=book_dict['pop_names_df'], n_sections=n_sections)
+
+                return render_template('progress.html', plotly_graphJSON=plotly_graphJSON, received=True)
+
+        if request.form['submit'] == 'Generate the Graph!':
+            analyzer = Book_content_analyzer()
+            book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
+            n = book_dict['top_n']
+            top_n_popular_names = list(book_dict['names_dict'].keys())[:n]
 
 
-        graph_ = analyzer.matrix_to_edge(
-            cooccurrence_matrix=book_dict['cooccurrence_matrix'],
-            cooccurrence_matrix_with_senti=book_dict['cooccurrence_matrix_with_senti'],
-            pop_names_df=book_dict['pop_names_df'], 
-            top_n_popular_names=top_n_popular_names)
+            graph_ = analyzer.matrix_to_edge(
+                cooccurrence_matrix=book_dict['cooccurrence_matrix'],
+                cooccurrence_matrix_with_senti=book_dict['cooccurrence_matrix_with_senti'],
+                pop_names_df=book_dict['pop_names_df'], 
+                top_n_popular_names=top_n_popular_names)
+            return render_template('graph.html', graph_data=graph_, received=True)
 
-    else: return render_template('progress.html')
+    else: return render_template('progress.html', received=None)
 
 
 

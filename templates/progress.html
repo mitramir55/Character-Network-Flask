@@ -1,34 +1,47 @@
 {% extends "base.html" %}
 
 {% block content %}
-<br>
-<br>
 <div class="masthead-content">
     <div class="container px-5">
-<hr>
 
-  <h1>The importance of characters</h1>
+      
+<!--<p>Summarizer will be loaded after I get out of Iran....</p>-->
+<h3>Progress of Characters</h3>
+<hr>
+<p>In one of the final steps, we get to see the importance of each character
+  (number of occurrence of their name) in a chart. Please choose how many sections you
+ want the book to be to see the number of occurrences in those sections:</p>
+
+<br> <br>
+<form action="#"  method="post" enctype="multipart/form-data">
+ <p>How many sections? 
+ <input type="text" name="n_sections"></p>
+ <p><input type="submit" name="submit" value="See the progress of characters..."  class="btn btn-success"></p>
+</form>
+{% if received %}
+<hr>
   <p>This plot is generated using Plotly, but it is not a dash app.</p>
   <div id='chart' class='chart'”></div>
 </body>
 <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 <script type='text/javascript'>
-  var graphs = {{ graphJSON | safe }};
-  Plotly.plot('chart',graphs,{});
+  var graphs = {{ plotly_graphJSON | safe }};
+  Plotly.plot('chart', graphs,{});
 </script>
-</html>
-
-
 
 
 <br> <br>
 <form action="#"  method="post" enctype="multipart/form-data">
     <p>Now, let's put everything together and see the result! ⭐ 
        
-    <p><input type="submit" name="submit" value="Find the Names!"  class="btn btn-success"></p>
+    <p><input type="submit" name="submit" value="Generate the Graph!"  class="btn btn-success"></p>
 </form>
 
 <br>
+{%endif%}
+
+
+
 </div>
 </div>
 {% endblock %}

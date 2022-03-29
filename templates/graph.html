@@ -1,8 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<p>Credit: <a href="https://observablehq.com/@mitramir55/force-directed-graph/2">Force-Directed Graph by Mitra Mirshafiee</a></p>
+
+<script type="module">
+import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+import define from "https://api.observablehq.com/@mitramir55/force-directed-graph/2.js?v=3";
+const main = new Runtime().module(define, name => {
+  if (name === "chart") return new Inspector(document.querySelector("#observablehq-chart-e262cefb"));
+});
+
+main.redefine("data", graph_data)
+</script>
+
 <div class="col-lg-6 order-lg-1">
   <div class="p-5">
+
+<div id="observablehq-chart-e262cefb"></div>
 
 </div></div>
 

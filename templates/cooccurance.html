@@ -5,24 +5,22 @@
 <br>
 <div class="masthead-content">
     <div class="container px-5">
-<hr>
 <h5>Co-occurrence </h5>
 
-
-<br>
 <p>In here we analyze the association of characters and their relationships! 😻 
     
 </p>
-
+{%if not received%}
 <br> <br>
 <form action="#"  method="post" enctype="multipart/form-data">
     <p><input type="submit" name="submit" value="Give me the Cooccurrence!"  class="btn btn-success"></p>
 </form>
-
+{%endif%}
 <br>
 {% if received %}
 
-The co-occurrence matrix: 
+The co-occurrence matrix,
+ indicating the normalized number of times two character interact (or appear in one sentence): 
 <br>
 <table  class="table table-striped">
     <tr>
@@ -47,7 +45,9 @@ The co-occurrence matrix:
 </table>
 
 <br>
-The emotions between characters:
+The emotions between characters is calculated by taking the sentiment of 
+sentences they both appeared in (can be either -1, 0, or +1) and 
+multiplying it with the cooccurrence matrix:
 <br>
 <!-- second table with senti! -->
 <hr>
@@ -74,20 +74,11 @@ The emotions between characters:
 
 </table>
 
-<!--<p>Summarizer will be loaded after I get out of Iran....</p>-->
-
-<p>In one of the final steps, we get to see the importance of each character
-     (number of occurrence of their name) in a chart. Please choose how many sections you
-    want the book to be to see the number of occurrences in those sections:</p>
-
 <br> <br>
 <form action="#"  method="post" enctype="multipart/form-data">
-    <p>How many sections? 
-    <input type="text" name="n_sections"></p>
-    <p><input type="submit" name="submit" value="See the progress of characters..."  class="btn btn-success"></p>
+    <p>Next step: <input type="submit" name="submit" value="progress of Characters"  class="btn btn-success"></p>
 </form>
-</div>
-</div>
+
 {% endif %}
 
 

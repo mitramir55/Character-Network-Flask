@@ -312,17 +312,17 @@ class Book_content_analyzer:
 
 
     def create_cooccurrence_matrices(self, top_n_popular_names:list, book_sents:list, encoded_senti_labels:list,
-     normalize_mode=True, threshold = 2)-> Tuple[np.matrix, np.matrix, np.matrix]:
+     normalize_mode=True, threshold = 2)-> Tuple[pd.DataFrame, np.matrix, np.matrix]:
 
         """
-        inputs the popular names and book sents
+        inputs: popular names and book sents
         creates tfidf matrix, filters names, and creates a n x n matrix of names
         then removes the bottum half of the matrix
         threshold: min number of times two names are seen together
-        outputs two matrixes: one is affected by the sentiments another is not
+        outputs: a df of popular names and two matrixes (one is affected by the sentiments another is not)
         """
         
-        # first create the sentence - count matrix 
+        # create the sentence - count matrix 
         # doc_word = (documents, words)
         count_model = CountVectorizer(ngram_range=(1,1), token_pattern=r"[A-Za-z]+", lowercase=False)
         doc_word = count_model.fit_transform(book_sents)
@@ -330,27 +330,21 @@ class Book_content_analyzer:
         # check for number of sentences
         assert doc_word.shape[0] == len(book_sents) # num docs = num sents
 
-        # create a smaller version by filtering the words 
-
-        # name the columns of the array
         count_df = pd.DataFrame(doc_word.toarray(),
                                 columns=count_model.get_feature_names())
 
-
-        # popular words filtered out
+        # filter character names out
         pop_names_df = count_df.loc[:, top_n_popular_names]
         
-        # create the co occurrence matrix and remove one half of it
-        cooccurrence_matrix = np.dot(pop_names_df.T, pop_names_df) # can i remove this?
+        cooccurrence_matrix = np.dot(pop_names_df.T, pop_names_df) # (names, names)
         cooccurrence_matrix = self._zero_below_threshold(cooccurrence_matrix, threshold=threshold)
         
-        # multiply frequencies of words in sentences with the sentence sentiments
+        # (sents, names) * (sents, emotions) 
         count_df_with_sentiments = np.multiply(pop_names_df.to_numpy() , np.array(encoded_senti_labels).reshape(-1,1))
 
-        # co occurrence with sentiments
+        # cooccurrence with sentiments (names, sents) * (sents, names)
         cooccurrence_matrix_with_senti = np.dot(count_df_with_sentiments.T, count_df_with_sentiments)
             
-        # setting the diagonal axis to zero 
         cooccurrence_matrix_with_senti = self._zero_diag(cooccurrence_matrix_with_senti)
         cooccurrence_matrix = self._zero_diag(cooccurrence_matrix)
 
