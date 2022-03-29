@@ -45,15 +45,15 @@
     main.redefine("emotionsData", newData);
     </script>
 
-
+<div style="float:left; margin: 100; display: inline-block; ">
 
         <p>Distribution of sentences' emotions in this novel: </p>
         <p><span style="color: rgb(20, 190, 97);">Positive:  </span> {{ emotions_count_dict['Positive'] }}</p> 
         <p><span style="color: rgb(0, 140, 255);">Neutral:  </span>  {{ emotions_count_dict['Neutral'] }}</p> 
         <p><span style="color: rgb(114, 35, 88);">Negative:  </span> {{ emotions_count_dict['Negative'] }}</p> 
-
+</div>
         
-        <div id="observablehq-ourchart-61d40e85"></div>
+        <div style="float:right; margin: 100; display: contents;" id="observablehq-ourchart-61d40e85"></div>
         
         <form action="#"  method="post" enctype="multipart/form-data">
             <input type="submit" name="submit" value="Named Entity Recognition"  class="btn btn-success">
