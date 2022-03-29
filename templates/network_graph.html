@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="col-lg-6 order-lg-1">
+  <div class="p-5">       
+
+     <h5 class="display-4">Let's see the result!</h2>
+  <form action="#" method="post" enctype="multipart/form-data">
+    <input type="submit" name="submit" value="Create the graph"  class="btn btn-success">
+  </form>
+
+</div></div>
+{% if received %}
+    <script type="module">
+
+import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+import define from "https://api.observablehq.com/@mitramir55/force-directed-graph/2.js?v=3";
+const main = new Runtime().module(define, name => {
+  if (name === "chart") return new Inspector(document.querySelector("#observablehq-chart-e262cefb"));
+});
+var newGraphData = {{graph_data|tojson}}
+main.redefine("graphData", newGraphData)
+</script>
+
+    <div style="display: inline-block; margin: 0%;" width="50%" height="100" id="observablehq-chart-e262cefb"></div>
+{% endif %}
+
+{% endblock %}

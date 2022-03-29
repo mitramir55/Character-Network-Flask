@@ -346,6 +346,15 @@ def progress():
                 return render_template('progress.html', plotly_graphJSON=plotly_graphJSON, received=True)
 
         if request.form['submit'] == 'Generate the Graph!':
+            return redirect(url_for('network_graph', received=None))
+
+    else: return render_template('progress.html', received=None)
+
+
+@app.route('/network_graph', methods=['POST', 'GET'])
+def network_graph():
+    if request.method =='POST':
+        if request.form["submit"] == "Create the graph":
             analyzer = Book_content_analyzer()
             book_dict = pd.read_pickle(app.config['UPLOAD_FOLDER'] + 'book_dict.pkl')
             n = book_dict['top_n']
@@ -357,11 +366,9 @@ def progress():
                 cooccurrence_matrix_with_senti=book_dict['cooccurrence_matrix_with_senti'],
                 pop_names_df=book_dict['pop_names_df'], 
                 top_n_popular_names=top_n_popular_names)
-            return render_template('graph.html', graph_data=graph_, received=True)
+            return render_template('network_graph.html', graph_data=graph_, received=True)
 
-    else: return render_template('progress.html', received=None)
-
-
+    else: return render_template('network_graph.html', received=None)
 
 @app.route('/sent')
 def sent():
