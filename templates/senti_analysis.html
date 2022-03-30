@@ -30,14 +30,12 @@
           </p>
         </div>
 
-        <br> <br>
+        {% if not received %}
         <form action="#"  method="post" enctype="multipart/form-data">
         <input type="submit" name="submit" value="Go with TransformerS!"  class="btn btn-success">
         <input type="submit" name="submit" value="Go with Afinn!"  class="btn btn-success">
         </form>
-
-        <br>
-        <br>
+        {% endif %}
         {% if received %}
 
         <!--Here comes the chart properties-->
