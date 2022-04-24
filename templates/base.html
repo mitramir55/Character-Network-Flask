@@ -24,7 +24,7 @@
         <link rel="stylesheet" href="static\assets\style.css" />
         <script src="static\assets\scripts.js"></script>
         <link rel="icon" type="image/x-icon" href="static\assets\favicon.ico" />
-        
+
         
         <title>Characters Network</title>
         <meta charset="utf-8" />
@@ -42,32 +42,34 @@
         <!-- Navigation-->
             <!-- Vertical navbar -->
             <div class="vertical-nav bg-white" id="sidebar">
-                <div class="py-4 px-3 mb-4 bg-light">
-                <div class="media d-flex align-items-center">
-                    <img src="{{url_for('static', filename='assets/favicon.ico')}}" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
-                    <div class="media-body">
-                    <h4 class="m-0">Network Graph</h4>
-                    <p class="font-weight-light text-muted mb-0">Story Analyzer</p>
+                <div class="py-4 px-3 mb-4">
+                    <a href="{{ url_for('index') }}">
+                        <div class="media d-flex align-items-center">
+                            <img src="{{url_for('static', filename='assets/favicon.ico')}}" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+                            <div class="media-body">
+                                <h4 class="m-0">Network Graph</h4>
+                                <p class="font-weight-light text-muted mb-0">Story Analyzer</p>
+                            </div>
+                        </a>
                     </div>
-                </div>
                 </div>
             <!--<p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">Main</p>-->
                 
             
                 <ul class="nav flex-column bg-white mb-0">
-                <li class="nav-item">
+                <li class="nav-item" barname="index">
                     <a href="{{ url_for('index') }}" class="nav-link text-dark font-italic bg-light">
                             <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
                             Introduction
                         </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" barname="book_info">
                     <a href="{{ url_for('input_info') }}" class="nav-link text-dark font-italic">
                             <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
                             Input book info
                         </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" barname="senti_analysis">
                     <a href="{{ url_for('senti_analysis') }}" class="nav-link text-dark font-italic">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-bookmark-heart" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
@@ -76,7 +78,7 @@
                              Sentiment Analysis
                         </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" barname="ner">
                     <a href="{{ url_for('ner') }}" class="nav-link text-dark font-italic">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-file-earmark-person" viewBox="0 0 20 20">
                             <path d="M11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -86,7 +88,7 @@
                         </a>
                 </li>         
 
-                <li class="nav-item">
+                <li class="nav-item" barname="cooccurance">
                     <a href="{{ url_for('cooccurance') }}" class="nav-link text-dark font-italic">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-people" viewBox="0 0 20 20">
                             <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
@@ -96,7 +98,7 @@
                 </li>
 
 
-                <li class="nav-item">
+                <li class="nav-item" barname="progress">
                     <a href="{{ url_for('progress') }}" class="nav-link text-dark font-italic">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-building" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
@@ -106,12 +108,13 @@
                         </a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item" barname="network_graph">
                     <a href="{{ url_for('network_graph') }}" class="nav-link text-dark font-italic">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-bounding-box" viewBox="0 0 20 20">
                             <path d="M5 2V0H0v5h2v6H0v5h5v-2h6v2h5v-5h-2V5h2V0h-5v2H5zm6 1v2h2v6h-2v2H5v-2H3V5h2V3h6zm1-2h3v3h-3V1zm3 11v3h-3v-3h3zM4 15H1v-3h3v3zM1 4V1h3v3H1z"/>
                           </svg>
-                            Final graph
+                          Final graph
+                            
                         </a>
                 </li>
 
