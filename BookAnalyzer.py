@@ -3,10 +3,7 @@ import spacy
 import json
 import pandas as pd
 import regex as re
-import numpy as np #, torch
-# from transformers import pipeline
-# import networkx as nx
-# import matplotlib.pyplot as plt
+import numpy as np
 from afinn import Afinn
 import plotly.express as px
 from sklearn.feature_extraction.text import CountVectorizer
@@ -15,6 +12,7 @@ import string
 from collections import Counter, defaultdict
 from typing import Tuple
 import plotly
+
 # for scraping
 from bs4 import BeautifulSoup
 import requests
