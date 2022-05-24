@@ -77,7 +77,9 @@
 }
 
 body {
-  margin: 0;
+  height:auto !important;
+  min-height:100%;
+  margin: 0 0 50px 0;
   font-family: var(--bs-body-font-family);
   font-size: var(--bs-body-font-size);
   font-weight: var(--bs-body-font-weight);
@@ -652,6 +654,10 @@ progress {
 .container-md,
 .container-sm {
   width: 100%;
+  padding-bottom: 50px; 
+  margin-bottom: 50px;
+  min-height: 400px;
+  height: 100%;
   padding-right: var(--bs-gutter-x, 0.75rem);
   padding-left: var(--bs-gutter-x, 0.75rem);
   margin-right: auto;
@@ -7451,7 +7457,8 @@ textarea.form-control-lg {
 }
 
 .p-5 {
-  padding: 3rem !important;
+  padding: 2rem !important;
+  width: 100%;
 }
 
 .px-0 {
@@ -11500,4 +11507,15 @@ header.masthead .bg-circle-4 {
 
 .text-gray {
   color: #aaa;
+}
+
+
+#footer {
+  background-color: #F3F3F3;
+  padding-top: 10px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  bottom:0;
+  width:100%;
+  display: block;
 }

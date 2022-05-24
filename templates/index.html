@@ -3,34 +3,31 @@
 
 {% block content %}
 
+  <!-- Content section 1-->
+    <div class="col-lg-6 order-lg-1" >
+        <div class="p-5">
+            <h2 class="display-4">A quick intro:</h2>
+            <p>In this website we can take out the important 
+                features, emotions, characters and find out the overall vibe of a book.</p>
+        
+              <h2 class="display-4">Let's get started!</h2>
+              <p> Click on the button if you want to proceed:</p>
+              <form action="#" method="post" enctype="multipart/form-data">
+                <input type="submit" name="submit" value="Go!"  class="btn btn-success">
+              </form>
+              <br>
+
+        </div>
+  </div> 
+  <div style="float: right;">
+    <iframe id="embed" width="60%" height="700"
+    style="width: 60%; height: intrinsic;"
+    src="https://observablehq.com/embed/@mitramir55/force-directed-graph/2?cells=chart"></iframe>
 
 
-  <iframe class="network" width="60%" height="900" frameborder="0" style="float: right;"
-  src="https://observablehq.com/embed/@mitramir55/force-directed-graph/2?cells=chart"></iframe>
-
-
-        <!-- Content section 1-->
-                  <div class="col-lg-6 order-lg-1">
-                      <div class="p-5">
-                          <h2 class="display-4">A quick intro:</h2>
-                          <p>In this website we can take out the important 
-                              features, emotions, characters and find out the overall vibe of a book.</p>
-                      </div>
-
-          </div>
-      </section>
-
-  <div class="col-lg-6 order-lg-1">
-    <div class="p-5">
-      <h2 class="display-4">Let's get started!</h2>
-      <p> Click on the button if you want to proceed:</p>
-      <form action="#" method="post" enctype="multipart/form-data">
-        <input type="submit" name="submit" value="Go!"  class="btn btn-success">
-      </form>
-    <br>
-    </div>
-  </div>
-<br> <br>  
+</div>
 
 <script src="static\assets\script_sidebar.js"></script>
+
+<br> <br> 
   {% endblock %}

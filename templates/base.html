@@ -35,10 +35,8 @@
    
 
     </head>
-    <body id="page-top">
+    <body>
 
-
-        
         <!-- Navigation-->
             <!-- Vertical navbar -->
             <div class="vertical-nav bg-white" id="sidebar">
@@ -61,14 +59,15 @@
                     <a href="{{ url_for('index') }}" class="nav-link text-dark font-italic bg-light">
                             <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
                             Introduction
-                        </a>
+                    </a>
                 </li>
                 <li class="nav-item" barname="book_info">
                     <a href="{{ url_for('input_info') }}" class="nav-link text-dark font-italic">
                             <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
                             Input book info
-                        </a>
+                    </a>
                 </li>
+
                 <li class="nav-item" barname="senti_analysis">
                     <a href="{{ url_for('senti_analysis') }}" class="nav-link text-dark font-italic">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-bookmark-heart" viewBox="0 0 20 20">
@@ -76,7 +75,7 @@
                             <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
                           </svg>
                              Sentiment Analysis
-                        </a>
+                    </a>
                 </li>
                 <li class="nav-item" barname="ner">
                     <a href="{{ url_for('ner') }}" class="nav-link text-dark font-italic">
@@ -84,8 +83,8 @@
                             <path d="M11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                             <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2v9.255S12 12 8 12s-5 1.755-5 1.755V2a1 1 0 0 1 1-1h5.5v2z"/>
                           </svg>
-                             Named Entity Recognition
-                        </a>
+                          Named Entity Recognition
+                    </a>
                 </li>         
 
                 <li class="nav-item" barname="cooccurance">
@@ -105,7 +104,7 @@
                             <path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
                           </svg>
                             Character progress
-                        </a>
+                    </a>
                 </li>
 
                 <li class="nav-item" barname="network_graph">
@@ -116,17 +115,8 @@
                           Final graph
                             
                         </a>
-                </li>
-
-
-
-
+                    </li>
                 </ul>
-            <!--
-                
-                <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Charts</p>
-            -->
-            
             </div>
             <!-- End vertical navbar -->
         
@@ -134,14 +124,14 @@
   <div class="page-content p-5" id="content">
 
     
-    <!-- Toggle button -->
-    <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4">
-        <i class="fa fa-bars mr-2"></i>
-        <small class="font-weight-bold">Road Map</small>
-    </button>
-  
+        <!-- Toggle button -->
+        <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4">
+            <i class="fa fa-bars mr-2"></i>
+            <small class="font-weight-bold">Road Map</small>
+        </button>
+    
 
-        <div class="container">
+        <div class="container" style="height: 100%;">
             <!--This is the error flash-->
             {% for message in get_flashed_messages() %}
             <div class="alert alert-warning">
@@ -157,14 +147,10 @@
     
 </div>
 
-
-        
-
-        <!-- Footer-->
-        <footer class="py-5 bg-black">
-            <div class="container px-5"><p class="m-0 text-center text-white small">Copyright &copy; Character Analysis 2022</p></div>
-        </footer>
-
     </body>
 
+        <!-- Footer-->
+        <footer class="py-5 bg-black" id="footer" style="margin-bottom:0px ;">
+            <div class="container px-5"><p class="m-0 text-center text-white small">Copyright &copy; Character Analysis 2022</p></div>
+        </footer>
 </html>
