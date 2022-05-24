@@ -79,7 +79,6 @@
 body {
   height:auto !important;
   min-height:100%;
-  margin: 0 0 50px 0;
   font-family: var(--bs-body-font-family);
   font-size: var(--bs-body-font-size);
   font-weight: var(--bs-body-font-weight);
