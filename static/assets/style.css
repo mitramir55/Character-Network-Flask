@@ -11517,5 +11517,5 @@ header.masthead .bg-circle-4 {
   margin-bottom: 0px;
   bottom:0;
   width:100%;
-  display: block;
+  position: relative;
 }
