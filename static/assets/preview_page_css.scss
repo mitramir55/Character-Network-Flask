@@ -94,7 +94,7 @@ p {
             padding: 20px 20px 15px;
             box-shadow: $timeline-body-shadow;
             width: 700px;
-            height: 500px;
+            height: auto;
 
             &:before {
                 content: '';
@@ -209,3 +209,13 @@ p {
 		}
 	}
 }
+
+.imageDiv {
+    display: flex;
+    justify-content: center;
+}
+
+#imageElement {
+    border: 5px solid #555;
+}
+

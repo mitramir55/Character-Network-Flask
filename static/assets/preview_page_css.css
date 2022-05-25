@@ -79,7 +79,7 @@ p {
   -webkit-box-shadow: 1px 3px 9px rgba(0, 0, 0, 0.1);
           box-shadow: 1px 3px 9px rgba(0, 0, 0, 0.1);
   width: 700px;
-  height: 500px;
+  height: auto;
 }
 
 .timeline .timeline-container .timeline-body:before {
@@ -184,5 +184,18 @@ p {
 .author .btn:visited:focus,
 .author .btn:visited:active {
   background-color: #1a1a1a;
+}
+
+.imageDiv {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+#imageElement {
+  border: 5px solid #555;
 }
 /*# sourceMappingURL=preview_page_css.css.map */
