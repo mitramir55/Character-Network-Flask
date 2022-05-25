@@ -54,10 +54,15 @@ def find_not_detected_names(missing_names:str, names_dict:dict)->list:
 def index():
     
     if request.method=='POST':
-        return redirect(url_for('input_info'))
-        
+        if request.form['submit'] == 'Start Analyzing':
+            return redirect(url_for('input_info'))
+        elif request.form['submit'] == 'See a Sample':
+            return redirect(url_for('preview'))
     return render_template('index.html')
 
+@app.route('/preview', methods=['POST', 'GET'])
+def preview(**kwargs):
+    return render_template('preview.html')
 
 @app.route('/input_info', methods=['POST', 'GET'])
 def input_info(**kwargs):
