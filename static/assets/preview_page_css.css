@@ -8,7 +8,7 @@
 
 body {
   font-family: 'K2D', sans-serif;
-  background: #1e1e2f;
+  background: #e1e1fb;
   letter-spacing: 1px;
 }
 
@@ -26,8 +26,8 @@ p {
 
 .timeline {
   position: relative;
-  padding-left: 4rem;
-  margin: 0 0 0 30px;
+  padding-left: 2rem;
+  margin: 0 0 0 0px;
   color: white;
 }
 
@@ -78,6 +78,8 @@ p {
   padding: 20px 20px 15px;
   -webkit-box-shadow: 1px 3px 9px rgba(0, 0, 0, 0.1);
           box-shadow: 1px 3px 9px rgba(0, 0, 0, 0.1);
+  width: 700px;
+  height: 500px;
 }
 
 .timeline .timeline-container .timeline-body:before {

@@ -16,7 +16,7 @@ $warning: #ff8d72;
 $danger: #fd5d93;
 
 // timeline variables
-$body-bg: #1e1e2f;
+$body-bg: #e1e1fb;
 $timeline-before-bg : #222a42;
 $timeline-body-bg: #27293d;
 $timeline-body-round: 3px;
@@ -45,8 +45,8 @@ p {
 // timeline style
 .timeline {
     position: relative;
-    padding-left: 4rem;
-    margin: 0 0 0 30px;
+    padding-left: 2rem;
+    margin: 0 0 0 0px;
     color: white;
 
     &:before {
@@ -93,6 +93,8 @@ p {
             border-radius: $timeline-body-round;
             padding: 20px 20px 15px;
             box-shadow: $timeline-body-shadow;
+            width: 700px;
+            height: 500px;
 
             &:before {
                 content: '';
