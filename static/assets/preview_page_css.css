@@ -1,209 +1,186 @@
-@import url('https://fonts.googleapis.com/css?family=Niramit:300,300i,700');
-
-// reset some browser default styles
+@import url("https://fonts.googleapis.com/css?family=Niramit:300,300i,700");
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
-
-// colors
-$primary: #1d8cf8;
-$secondary: #4f537b;
-$info: #11cdef;
-$success: #00bf9a;
-$warning: #ff8d72;
-$danger: #fd5d93;
-
-// timeline variables
-$body-bg: #1e1e2f;
-$timeline-before-bg : #222a42;
-$timeline-body-bg: #27293d;
-$timeline-body-round: 3px;
-$timeline-body-shadow: 1px 3px 9px rgba(0,0,0, .1);
 
 body {
-    font-family: 'K2D', sans-serif;
-    background: $body-bg;
-    letter-spacing: 1px;
+  font-family: 'K2D', sans-serif;
+  background: #1e1e2f;
+  letter-spacing: 1px;
 }
 
-// page container
 .container {
-    max-width: 650px;
-    margin: 50px auto;
+  max-width: 650px;
+  margin: 50px auto;
 }
 
-// typography
 p {
-    font-weight: 300;
-    line-height: 1.5;
-    font-size: 14px;
-    opacity: .8;
+  font-weight: 300;
+  line-height: 1.5;
+  font-size: 14px;
+  opacity: .8;
 }
 
-// timeline style
 .timeline {
-    position: relative;
-    padding-left: 4rem;
-    margin: 0 0 0 30px;
-    color: white;
-
-    &:before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 4px;
-        height: 100%;
-        background: $timeline-body-bg;
-    }
-
-    .timeline-container {
-        position: relative;
-        margin-bottom: 2.5rem;;
-
-        .timeline-icon {
-            position: absolute;
-            left: -88px;
-            top: 4px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            text-align: center;
-            font-size: 2rem;
-            background: $secondary;
-
-            i {
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                transform: translate(-50%, -50%);
-            }
-
-            img {
-                width: 100%;
-                height: 100%;
-                border-radius: 50%;
-            }
-        }
-
-        .timeline-body {
-            background: $timeline-body-bg;
-            border-radius: $timeline-body-round;
-            padding: 20px 20px 15px;
-            box-shadow: $timeline-body-shadow;
-
-            &:before {
-                content: '';
-                background: inherit;
-                width: 20px;
-                height: 20px;
-                display: block;
-                position: absolute;
-                left: -10px;
-                transform: rotate(45deg);
-                border-radius: 0 0 0 2px;
-            }
-
-            .timeline-title {
-                margin-bottom: 1.4rem;
-
-                .badge {
-                    background: $secondary;
-                    padding: 4px 8px;
-                    border-radius: 3px;
-                    font-size: 12px;
-                    font-weight: bold;
-                }
-            }
-
-            .timeline-subtitle {
-                font-weight: 300;
-                font-style: italic;
-                opacity: .4;
-                margin-top: 16px;
-                font-size: 11px;
-            }
-        }
-
-        // Primary Timeline
-        &.primary {
-            .badge,
-            .timeline-icon {
-                background: $primary !important;
-            }
-        }
-
-        // Info Timeline
-        &.info {
-            .badge,
-            .timeline-icon {
-                background: $info !important;
-            }
-        }
-
-        // Success Timeline
-        &.success {
-            .badge,
-            .timeline-icon {
-                background: $success !important;
-            }
-        }
-
-        // Warning Timeline
-        &.warning {
-            .badge,
-            .timeline-icon {
-                background: $warning !important;
-            }
-        }
-
-        // Dnager Timeline
-        &.danger {
-            .badge,
-            .timeline-icon {
-                background: $danger !important;
-            }
-        }
-
-    }
+  position: relative;
+  padding-left: 4rem;
+  margin: 0 0 0 30px;
+  color: white;
 }
 
-
-.author{
-	font-family: inherit;
-	padding: 3em;
-	text-align: center;
-	width: 100%;
-		color: white;
- 
-	a:link,
-	a:visited{
-		color: white;
-		&:hover{
-			text-decoration: none;
-		}
-	}
-	.btn:link,
-	.btn:visited{
-		margin-top: 1em;
-		text-decoration: none;
-		display: inline-block;
-		font-family: inherit;
-		font-weight: 100;
-		color: white;
-		text-align: center;
-		vertical-align: middle;
-		user-select: none;
-		background-color: black;
-		padding: 1.5em 2rem;
-		border-radius: 1em;
-		transition: .5s all;
-		&:hover,
-		&:focus,
-		&:active{
-			background-color: lighten(black, 10%);
-		}
-	}
+.timeline:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: #27293d;
 }
+
+.timeline .timeline-container {
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+
+.timeline .timeline-container .timeline-icon {
+  position: absolute;
+  left: -88px;
+  top: 4px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 2rem;
+  background: #4f537b;
+}
+
+.timeline .timeline-container .timeline-icon i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.timeline .timeline-container .timeline-icon img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.timeline .timeline-container .timeline-body {
+  background: #27293d;
+  border-radius: 3px;
+  padding: 20px 20px 15px;
+  -webkit-box-shadow: 1px 3px 9px rgba(0, 0, 0, 0.1);
+          box-shadow: 1px 3px 9px rgba(0, 0, 0, 0.1);
+}
+
+.timeline .timeline-container .timeline-body:before {
+  content: '';
+  background: inherit;
+  width: 20px;
+  height: 20px;
+  display: block;
+  position: absolute;
+  left: -10px;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  border-radius: 0 0 0 2px;
+}
+
+.timeline .timeline-container .timeline-body .timeline-title {
+  margin-bottom: 1.4rem;
+}
+
+.timeline .timeline-container .timeline-body .timeline-title .badge {
+  background: #4f537b;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.timeline .timeline-container .timeline-body .timeline-subtitle {
+  font-weight: 300;
+  font-style: italic;
+  opacity: .4;
+  margin-top: 16px;
+  font-size: 11px;
+}
+
+.timeline .timeline-container.primary .badge,
+.timeline .timeline-container.primary .timeline-icon {
+  background: #1d8cf8 !important;
+}
+
+.timeline .timeline-container.info .badge,
+.timeline .timeline-container.info .timeline-icon {
+  background: #11cdef !important;
+}
+
+.timeline .timeline-container.success .badge,
+.timeline .timeline-container.success .timeline-icon {
+  background: #00bf9a !important;
+}
+
+.timeline .timeline-container.warning .badge,
+.timeline .timeline-container.warning .timeline-icon {
+  background: #ff8d72 !important;
+}
+
+.timeline .timeline-container.danger .badge,
+.timeline .timeline-container.danger .timeline-icon {
+  background: #fd5d93 !important;
+}
+
+.author {
+  font-family: inherit;
+  padding: 3em;
+  text-align: center;
+  width: 100%;
+  color: white;
+}
+
+.author a:link,
+.author a:visited {
+  color: white;
+}
+
+.author a:link:hover,
+.author a:visited:hover {
+  text-decoration: none;
+}
+
+.author .btn:link,
+.author .btn:visited {
+  margin-top: 1em;
+  text-decoration: none;
+  display: inline-block;
+  font-family: inherit;
+  font-weight: 100;
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-color: black;
+  padding: 1.5em 2rem;
+  border-radius: 1em;
+  -webkit-transition: .5s all;
+  transition: .5s all;
+}
+
+.author .btn:link:hover, .author .btn:link:focus, .author .btn:link:active,
+.author .btn:visited:hover,
+.author .btn:visited:focus,
+.author .btn:visited:active {
+  background-color: #1a1a1a;
+}
+/*# sourceMappingURL=preview_page_css.css.map */
