@@ -16,7 +16,10 @@
         <div class="timeline">
             <div class="timeline-container primary">
                 <div class="timeline-icon">
-                    <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" class="bi bi-check2-square" viewBox="0 0 16 16">
+                        <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"/>
+                        <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+                      </svg>
                 </div>
                 <div class="timeline-body">
                     <h4 class="timeline-title"><span class="badge">Book Info</span></h4>
@@ -35,7 +38,7 @@
             </div>
             <div class="timeline-container danger">
                 <div class="timeline-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-bookmark-heart" viewBox="0 0 20 20">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" class="bi bi-bookmark-heart" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
                         <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
                       </svg>
@@ -43,36 +46,60 @@
                 <div class="timeline-body">
                     <h4 class="timeline-title"><span class="badge">Sentiment Analysis</span></h4>
                     <p>
-                        First, you enter the book details (name and the way chapters are in the text).
-                        With the help of this info, the website scrapes more info from GoodReads website to tell you 
-                        about the author, year of publishing, and other facts.
-                        The SpaCy small model is also utilized in this step to count the number of sentences in the file 
-                        you upload.
+                        In this step we separate sentences with SpaCy and analyze them with Afinn. At the end we 
+                        get a nice graph of the overall mood of the book.
                     </p>
                     <div class="imageDiv">
-                        <img width="500" height="400" id="imageElement" src="static\preview pics\info book.png" alt="book information result">
+                        <img width="500" height="400" id="imageElement" src="static\preview pics\pic2_senti.png" alt="book information result">
                     </div>
                     
                 </div>
             </div>
             <div class="timeline-container success">
                 <div class="timeline-icon">
-                    <i class="far fa-grin-tears"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" class="bi bi-bookmark-heart" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                      </svg>
                 </div>
                 <div class="timeline-body">
-                    <h4 class="timeline-title"><span class="badge">Success</span></h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam necessitatibus numquam earum ipsa fugiat veniam suscipit, officiis repudiandae, eum recusandae neque dignissimos. Cum fugit laboriosam culpa, repellendus esse commodi deserunt.</p>
-                    <p class="timeline-subtitle">6 Hours Ago</p>
+                    <h4 class="timeline-title"><span class="badge">Named Entity Recognition - NER</span></h4>
+                    <p>
+                        After saving the sentiment indicator for each sentence, we once again process them and 
+                        look for names of people\characters in the book.
+                    </p>
+                    <div class="imageDiv">
+                        <img width="500" height="400" id="imageElement" src="static\preview pics\pic3_ner1.png" alt="book information result">
+                    </div>
+                    <p>
+                        <br>
+                        Sometimes, you might not see the names of specific characters or just find some redundant 
+                        names between them. If there was any change you wanted to make in the list, you can simply use the
+                        last two boxes to write the names of people in.
+                    </p>
+                    <div class="imageDiv">
+                        <img src="static\preview pics\pic4_ner2.png" id="imageElement" alt="modifying">
+                    </div>
+                    
                 </div>
             </div>
             <div class="timeline-container warning">
                 <div class="timeline-icon">
-                    <i class="far fa-grimace"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"  class="bi bi-file-earmark-person" viewBox="0 0 20 20">
+                        <path d="M11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                        <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2v9.255S12 12 8 12s-5 1.755-5 1.755V2a1 1 0 0 1 1-1h5.5v2z"/>
+                      </svg>
                 </div>
                 <div class="timeline-body">
-                    <h4 class="timeline-title"><span class="badge">Warning</span></h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam necessitatibus numquam earum ipsa fugiat veniam suscipit, officiis repudiandae, eum recusandae neque dignissimos. Cum fugit laboriosam culpa, repellendus esse commodi deserunt.</p>
-                    <p class="timeline-subtitle">1 Day Ago</p>
+                    <h4 class="timeline-title"><span class="badge">Co-occurrence</span></h4>
+                    <p>
+                        For this part, we analyze at how characters interact with each other 
+                        by looking at their mutual occurrence in one sentence. Then, we use the 
+                        sentiment scores of these sentences and create a table indicating characters relationships.
+                    </p>
+                    <div class="imageDiv">
+                        <img style=" height: 300px;" id="imageElement" src="static\preview pics\pic5_co1.png" alt="book information result">
+                    </div>
                 </div>
             </div>
             <div class="timeline-container">
@@ -80,9 +107,17 @@
                     <i class="far fa-grin-beam-sweat"></i>
                 </div>
                 <div class="timeline-body">
-                    <h4 class="timeline-title"><span class="badge">Secondary</span></h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam necessitatibus numquam earum ipsa fugiat veniam suscipit, officiis repudiandae, eum recusandae neque dignissimos. Cum fugit laboriosam culpa, repellendus esse commodi deserunt.</p>
-                    <p class="timeline-subtitle">3 Days Ago</p>
+                    <h4 class="timeline-title"><span class="badge">Character Progress</span></h4>
+                    <p>
+                        Because we want to get a good overview of characters' roles and importance,
+                        we also look at their presence through out the book. We do that by segmenting 
+                        text into n pieces and counting the appearance of each person in that segment.
+                        
+                    </p>
+                    <div class="imageDiv">
+                        <img style="height: 300px;" id="imageElement" src="static\preview pics\pic6_progress.png" alt="book information result">
+                    </div>
+                    
                 </div>
             </div>
             <div class="timeline-container info">
@@ -90,9 +125,15 @@
                     <i class="far fa-grin"></i>
                 </div>
                 <div class="timeline-body">
-                    <h4 class="timeline-title"><span class="badge">Info</span></h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam necessitatibus numquam earum ipsa fugiat veniam suscipit, officiis repudiandae, eum recusandae neque dignissimos. Cum fugit laboriosam culpa, repellendus esse commodi deserunt.</p>
-                    <p class="timeline-subtitle">4 Days Ago</p>
+                    <h4 class="timeline-title"><span class="badge">The Graph</span></h4>
+                    <p>
+                        The final step is creating a graph. For this visualization, I utilized D3 library Graph force 
+                        to depict nodes and edges.
+                    </p>
+                    
+                    <div class="imageDiv">
+                        <img style="" id="imageElement" src="static\preview pics\pic7_graph.png" alt="book information result">
+                    </div>
                 </div>
             </div>
         </div>
