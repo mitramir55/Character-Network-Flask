@@ -48,14 +48,15 @@ p {
 
 .timeline .timeline-container .timeline-icon {
   position: absolute;
-  left: -88px;
+  left: -100px;
   top: 4px;
-  width: 50px;
-  height: 50px;
+  padding: 9px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   text-align: center;
   font-size: 2rem;
-  background: #4f537b;
+  background: #ddabb7;
 }
 
 .timeline .timeline-container .timeline-icon i {
@@ -100,11 +101,12 @@ p {
 }
 
 .timeline .timeline-container .timeline-body .timeline-title .badge {
-  background: #4f537b;
+  background: #ddabb7;
   padding: 4px 8px;
   border-radius: 3px;
   font-size: 12px;
   font-weight: bold;
+  color: black;
 }
 
 .timeline .timeline-container .timeline-body .timeline-subtitle {
@@ -117,27 +119,27 @@ p {
 
 .timeline .timeline-container.primary .badge,
 .timeline .timeline-container.primary .timeline-icon {
-  background: #1d8cf8 !important;
+  background: #ddabb7 !important;
 }
 
 .timeline .timeline-container.info .badge,
 .timeline .timeline-container.info .timeline-icon {
-  background: #11cdef !important;
+  background: #ddabb7 !important;
 }
 
 .timeline .timeline-container.success .badge,
 .timeline .timeline-container.success .timeline-icon {
-  background: #00bf9a !important;
+  background: #ddabb7 !important;
 }
 
 .timeline .timeline-container.warning .badge,
 .timeline .timeline-container.warning .timeline-icon {
-  background: #ff8d72 !important;
+  background: #ddabb7 !important;
 }
 
 .timeline .timeline-container.danger .badge,
 .timeline .timeline-container.danger .timeline-icon {
-  background: #fd5d93 !important;
+  background: #ddabb7 !important;
 }
 
 .author {

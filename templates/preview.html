@@ -18,7 +18,7 @@
                 <div class="timeline-icon">
                     <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
                 </div>
-                <div class="timeline-body" style="display:block;margin: 20px;">
+                <div class="timeline-body">
                     <h4 class="timeline-title"><span class="badge">Book Info</span></h4>
                     <p>
                         First, you enter the book details (name and the way chapters are in the text).
@@ -35,12 +35,24 @@
             </div>
             <div class="timeline-container danger">
                 <div class="timeline-icon">
-                    <i class="far fa-grin-hearts"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-bookmark-heart" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                      </svg>
                 </div>
                 <div class="timeline-body">
-                    <h4 class="timeline-title"><span class="badge">Danger</span></h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam necessitatibus numquam earum ipsa fugiat veniam suscipit, officiis repudiandae, eum recusandae neque dignissimos. Cum fugit laboriosam culpa, repellendus esse commodi deserunt.</p>
-                    <p class="timeline-subtitle">2 Hours Ago</p>
+                    <h4 class="timeline-title"><span class="badge">Sentiment Analysis</span></h4>
+                    <p>
+                        First, you enter the book details (name and the way chapters are in the text).
+                        With the help of this info, the website scrapes more info from GoodReads website to tell you 
+                        about the author, year of publishing, and other facts.
+                        The SpaCy small model is also utilized in this step to count the number of sentences in the file 
+                        you upload.
+                    </p>
+                    <div class="imageDiv">
+                        <img width="500" height="400" id="imageElement" src="static\preview pics\info book.png" alt="book information result">
+                    </div>
+                    
                 </div>
             </div>
             <div class="timeline-container success">
