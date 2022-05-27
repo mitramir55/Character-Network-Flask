@@ -32,8 +32,10 @@
 
         {% if not received %}
         <form action="#"  method="post" enctype="multipart/form-data">
-        <input type="submit" name="submit" value="Go with TransformerS!"  class="btn btn-success">
         <input type="submit" name="submit" value="Go with Afinn!"  class="btn btn-success">
+        <br>
+        <p>Using Transformers🤗 only works in the local version! If you want to try it, download and use the code from GitHub!</p>
+        <input type="submit" name="submit" value="Go with TransformerS!"  class="btn btn-success">
         </form>
         {% endif %}
         {% if received %}

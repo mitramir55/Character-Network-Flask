@@ -178,22 +178,27 @@ def senti_analysis(**kwargs):
         # transformers ----------------------------------------------------------
         if request.form['submit'] == "Go with TransformerS!":
 
-            flash("will be loaded after I get out of Iran!\n for now, we use previously processed files.")
-            # unhash the following =======================================
+            flash("""Please download the GitHub code and run it on your own machine. 
+            Heroku does not allow downloading big models.\n
+            Try afinn instead.
+            """)
+            # ======! uncomment the following lines in the local version !======
             
-            #sentiment_lables, encoded_sentiment_labels, emotions_count = analyzer.senti_analysis_transformers(book_dict['finalized_sents'])
-            properties_folder_path = r"C:\Users\Lenovo\Flask apps\flask-app-character-net\Archive\sample results of analysis"
-            book_content = pd.read_pickle(properties_folder_path + r'\book_content.pkl')
-            sentiment_lables = pd.read_pickle(properties_folder_path + r'\sentiment_lables.pkl')
-            encoded_sentiment_labels = pd.read_pickle(properties_folder_path + r'\emotions_count.pkl')
-            emotions_count = pd.read_pickle(properties_folder_path + r'\emotions_count.pkl')
+            # sentiment_lables, encoded_sentiment_labels, emotions_count = analyzer.senti_analysis_transformers(book_dict['finalized_sents'])
+            # properties_folder_path = r"C:\Users\Lenovo\Flask apps\flask-app-character-net\Archive\sample results of analysis"
+            # book_content = pd.read_pickle(properties_folder_path + r'\book_content.pkl')
+            # sentiment_lables = pd.read_pickle(properties_folder_path + r'\sentiment_lables.pkl')
+            # encoded_sentiment_labels = pd.read_pickle(properties_folder_path + r'\emotions_count.pkl')
+            # emotions_count = pd.read_pickle(properties_folder_path + r'\emotions_count.pkl')
             
-            save_book_dict(book_dict)
+            # save_book_dict(book_dict)
 
-            return render_template('senti_analysis.html',
-                received=True, sentiment_lables=sentiment_lables, 
-                encoded_sentiment_labels =encoded_sentiment_labels,
-                emotions_count=emotions_count)
+            # return render_template('senti_analysis.html',
+            #     received=True, sentiment_lables=sentiment_lables, 
+            #     encoded_sentiment_labels =encoded_sentiment_labels,
+            #     emotions_count=emotions_count)
+
+            return render_template('senti_analysis.html')
 
         if request.form['submit'] == "Named Entity Recognition":
             return redirect(url_for('ner'))
