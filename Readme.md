@@ -2,7 +2,7 @@
 
 This webapp is created to tell you what characters decide for the plot, who is the dominant one, and how they interact with each other.
 
-![preview of the website]("static\preview pics\previewOfWebsite.png")
+![preview of the website](https://github.com/mitramir55/flask-app-character-net/blob/master/static/preview%20pics/previewOfWebsite.png)
 
 Resources:
 [Observable graph force](https://observablehq.com/@d3/force-directed-graph)
