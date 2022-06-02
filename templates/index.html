@@ -21,17 +21,23 @@
               <form action="#" method="post" enctype="multipart/form-data">
                 <input type="submit" name="submit" value="See a Sample"  class="btn btn-success">
                 <input type="submit" name="submit" value="Start Analyzing" class="btn btn-success">
+<br><br>
+                <p>You can use a sample file for the analysis:</p> 
+                <a class="btn btn-info" role="button" href="{{url_for('static', filename='outputs/output_corpus_level.csv')}}">
+                  Download
+                  </a>
               </form>
               <br>
         </div>
   </div> 
+  <p style="text-align:center">Drag and move the nodes around</p>
+
   <div style="position: relative;display: flex; margin-right: 0;padding-right: 0;">
-    <iframe id="embed" width="1000" height="900"
+    <iframe id="embed" width="1000" height="900" frameborder="0"
     src="https://observablehq.com/embed/@mitramir55/force-directed-graph/2?cells=chart"></iframe>
 
 
 </div>
-
 <script src="static\assets\script_sidebar.js"></script>
 
 <br> <br> 
