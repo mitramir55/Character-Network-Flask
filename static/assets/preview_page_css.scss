@@ -61,18 +61,20 @@ p {
 
     .timeline-container {
         position: relative;
-        margin-bottom: 2.5rem;;
+        margin-bottom: 2.5rem;
+        
 
         .timeline-icon {
             position: absolute;
-            left: -100px;
+            left: -120px;
             top: 4px;
-            padding: 9px;
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
+            padding: 15px;
             border-radius: 50%;
             text-align: center;
-            font-size: 2rem;
+            align-items: center;
+            font-size: 4rem;
             background: $secondary;
 
             i {
@@ -86,6 +88,12 @@ p {
                 width: 100%;
                 height: 100%;
                 border-radius: 50%;
+            }
+            svg {
+                width: 30px;
+                height: 30px;
+                align-items: center;
+                align-self: center;
             }
         }
 
@@ -220,4 +228,3 @@ p {
 #imageElement {
     border: 5px solid #555;
 }
-
