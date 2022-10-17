@@ -1,18 +1,15 @@
 #from crypt import methods
 from distutils.command.config import config
 import re
-from cherrypy import url
-from flask import Flask, flash, redirect, url_for, render_template, request, Response
-from graphviz import render
+from flask import Flask, flash, redirect, url_for, render_template, request
 import numpy as np
 import pandas as pd
-import os, io, csv, sys, pickle, time
+import os, pickle
 from afinn import Afinn
 from charset_normalizer import from_path
 from itertools import chain 
 from werkzeug.utils import secure_filename
 from BookAnalyzer import Book_content_analyzer, Book_info_scraper
-import plotly
 
 app = Flask(__name__)
 
