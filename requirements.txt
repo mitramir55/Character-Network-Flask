@@ -1,5 +1,5 @@
-spacy==3.4.1
-spacy-legacy==3.0.10
+spacy>=3.4.1
+spacy-legacy>=3.0.10
 gunicorn
 graphviz
 Flask
