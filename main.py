@@ -13,6 +13,9 @@ from BookAnalyzer import Book_content_analyzer, Book_info_scraper
 
 app = Flask(__name__)
 
+
+
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -410,4 +413,7 @@ app.config['SECRET_KEY'] = '12345'
 
 #------------------------------------------------------
 
-app.run(debug=True)
+from distutils.log import debug
+if __name__ == "__main__":
+  app.run(debug=True)
+
