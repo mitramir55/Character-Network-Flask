@@ -413,7 +413,6 @@ app.config['SECRET_KEY'] = '12345'
 
 #------------------------------------------------------
 
-from distutils.log import debug
 if __name__ == "__main__":
   app.run(debug=True)
 

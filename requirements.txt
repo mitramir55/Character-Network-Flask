@@ -1,8 +1,10 @@
-spacy>=3.4.1
-spacy-legacy>=3.0.10
+
+Flask
+
+spacy
+spacy-legacy
 gunicorn
 graphviz
-Flask
 pandas
 Afinn
 plotly
