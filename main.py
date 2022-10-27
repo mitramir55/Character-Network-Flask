@@ -412,7 +412,3 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SECRET_KEY'] = '12345'
 
 #------------------------------------------------------
-
-if __name__ == "__main__":
-  app.run(debug=True)
-
