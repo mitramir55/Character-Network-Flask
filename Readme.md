@@ -1,6 +1,6 @@
 # Analyze your favourit Book!
 
-This webapp is created to tell you what characters decide for the plot, who is the dominant one, and how they interact with each other. From November 2022, the website - [Link](https://shielded-brook-37613.herokuapp.com/) - can only be run locally since the host shut down its free servers. 
+This webapp is created to tell you what characters decide for the plot, who is the dominant one, and how they interact with each other. From November 2022, the website - [Link](https://book-character-network.herokuapp.com/) - can only be run locally since the host shut down its free servers. 
 
 *How to use*: clone the project, install Flask, and enter `flask run` in your terminal.
 
