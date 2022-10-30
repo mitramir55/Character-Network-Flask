@@ -51,11 +51,14 @@ The final step is creating a graph. For this visualization, I utilized D3 librar
 
 ![pic7_graph](https://user-images.githubusercontent.com/53291220/198904274-9660f1a6-e747-4cb7-9733-b5f6730b5f5e.png)
 
-Resources:
-[Observable graph force](https://observablehq.com/@d3/force-directed-graph)
-Inspired by [Ken Huang's character network project](https://github.com/hzjken/character-network).
+How to contribute?
 
-EPUB to txt convertor: [link](https://convertio.co/epub-txt/)
+If you're interested, you can either add features to this project or fork it to create your own. The license of this project is MIT license.
+
+Resources:
+- [Observable graph force](https://observablehq.com/@d3/force-directed-graph)
+- Inspired by [Ken Huang's character network project](https://github.com/hzjken/character-network).
+- EPUB to txt convertor: [link](https://convertio.co/epub-txt/)
 
 
 
